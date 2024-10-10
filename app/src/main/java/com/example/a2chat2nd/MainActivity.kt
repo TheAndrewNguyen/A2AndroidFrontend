@@ -1,16 +1,15 @@
-
+package com.example.a2chat2nd
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.a2chat2nd.HomeScreen
-import com.example.a2chat2nd.ui.theme.A2chat2ndTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,19 +24,21 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "test") {
         composable("home") { HomeScreen(navController) }
+        composable("test") {test(navController)}
     }
 }
 
-
-
-@Preview(showBackground = true)
 @Composable
-fun AppPreview() {
-    A2chat2ndTheme {
-        // To preview without navigation, you can remove navController for preview purposes
-        val navController = rememberNavController()
-        HomeScreen(navController)
+fun test(navController: NavHostController) {
+    Text("Please work")
+    Button(
+        onClick = { navController.navigate("home") }
+    ) {
+        Text(text="please work")
     }
 }
+
+
+
