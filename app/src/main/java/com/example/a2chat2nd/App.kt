@@ -10,9 +10,10 @@ import androidx.navigation.compose.rememberNavController
 fun App() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "home") {
-         composable("home") { HomeScreen(navController) }
-         composable("Join") { JoinScreen() }
+    NavHost(navController = navController, startDestination = "Home") {
+         composable("Home") { HomeScreen(navController) }
+         composable("Join") { JoinScreen(navController) }
+         composable("Create") { CreateScreen(navController) }
     }
 }
 

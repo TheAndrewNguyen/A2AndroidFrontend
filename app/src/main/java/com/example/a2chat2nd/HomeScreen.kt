@@ -32,7 +32,7 @@ fun HomeScreen(navController: NavHostController) {
             style = MaterialTheme.typography.titleLarge
         )
         HomeScreenJoinButton(navController)
-        HomeScreenCreateButton()
+        HomeScreenCreateButton(navController)
     }
 }
 
@@ -53,9 +53,9 @@ fun HomeScreenJoinButton(navController: NavController) {
 }
 
 @Composable
-fun HomeScreenCreateButton() {
+fun HomeScreenCreateButton(navController: NavController) {
     Button(
-        onClick = { /* Handle button click */ },
+        onClick = { navController.navigate("Create") },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.appleblue),
             contentColor = colorResource(id = R.color.white)
