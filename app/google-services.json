@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "607093230114",
-    "project_id": "a2chat-1fbf2",
-    "storage_bucket": "a2chat-1fbf2.appspot.com"
+    "project_number": "420313181834",
+    "project_id": "a2chat-25ae2",
+    "storage_bucket": "a2chat-25ae2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:607093230114:android:e986e4782d6844db07187b",
+        "mobilesdk_app_id": "1:420313181834:android:b9e0d8f1aead6ebbc64773",
         "android_client_info": {
           "package_name": "com.example.a2chat2nd"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCwxt1XvjDXx02Za42FrNiZrh3RLHgZSwA"
+          "current_key": "AIzaSyAtxPMkbGjYs5t2IOzVk-KhEhCbqdM2n0c"
         }
       ],
       "services": {
