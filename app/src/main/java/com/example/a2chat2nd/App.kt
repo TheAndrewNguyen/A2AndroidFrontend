@@ -13,7 +13,7 @@ fun App() {
     NavHost(navController = navController, startDestination = "Home") {
          composable("Home") { HomeScreen(navController) }
          composable("Join") { JoinScreen(navController) }
-         composable("Create") { CreateScreen(navController) }
+         composable("Create") { CreateAndChatScreen(navController) }
     }
 }
 

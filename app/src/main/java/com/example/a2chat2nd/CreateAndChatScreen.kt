@@ -34,12 +34,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun CreateScreen(navController: NavController) {
+fun CreateAndChatScreen(navController: NavController) {
     val showPopup = remember { mutableStateOf(false) } // State to control popup visibility
-
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -76,8 +76,12 @@ fun JoinCode () {
 
 @Composable
 fun EndButton(onClick: () -> Unit) {
+    val auth = FirebaseAuth.getInstance() // Get FirebaseAuth instance
+
     Button(
-        onClick = { onClick() },
+        onClick = {
+            AuthDeleteAndSignOut(auth)
+            onClick() },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.bootstrapRed),
         ),
@@ -89,6 +93,7 @@ fun EndButton(onClick: () -> Unit) {
 //pop up
 @Composable
 fun EndPopUp(navController: NavController, showPopUp: MutableState<Boolean>) {
+    val auth = FirebaseAuth.getInstance() // Get FirebaseAuth instance
     AlertDialog(
         onDismissRequest = { showPopUp.value = false },
         title = { Text(text = "Confirm leave") },
@@ -96,6 +101,7 @@ fun EndPopUp(navController: NavController, showPopUp: MutableState<Boolean>) {
         confirmButton = {
             Button(
                 onClick = {
+                    AuthDeleteAndSignOut(auth)
                     navController.navigate("Home") // Navigate on confirmation
                     showPopUp.value = false // Close the dialog
                 }
