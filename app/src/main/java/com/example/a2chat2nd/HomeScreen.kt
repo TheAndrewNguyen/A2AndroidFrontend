@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
@@ -58,10 +57,9 @@ fun HomeScreenJoinButton(navController: NavController) {
 
 @Composable
 fun HomeScreenCreateButton(navController: NavController) {
-    val auth = FirebaseAuth.getInstance() // Get FirebaseAuth instance
-
     Button(
-        onClick = { signOutAndSignInAnonymously(auth)
+        onClick = { authSignOutAndSignInAnonymously()
+                    ConnectToFireStore() //test firestore
                     navController.navigate("Create") },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.appleblue),

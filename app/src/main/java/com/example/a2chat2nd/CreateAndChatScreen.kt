@@ -80,7 +80,7 @@ fun EndButton(onClick: () -> Unit) {
 
     Button(
         onClick = {
-            AuthDeleteAndSignOut(auth)
+            authDeleteAndSignOut()
             onClick() },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.bootstrapRed),
@@ -101,7 +101,7 @@ fun EndPopUp(navController: NavController, showPopUp: MutableState<Boolean>) {
         confirmButton = {
             Button(
                 onClick = {
-                    AuthDeleteAndSignOut(auth)
+                    authDeleteAndSignOut()
                     navController.navigate("Home") // Navigate on confirmation
                     showPopUp.value = false // Close the dialog
                 }
