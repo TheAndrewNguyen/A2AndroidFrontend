@@ -15,11 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen() {
     // State to track sign-in status
     Column (
         modifier = Modifier.fillMaxSize(),
@@ -33,17 +31,17 @@ fun HomeScreen(navController: NavHostController) {
 
 
         // Join and Create buttons
-        HomeScreenJoinButton(navController)
-        HomeScreenCreateButton(navController)
+        HomeScreenJoinButton()
+        HomeScreenCreateButton()
     }
 }
 
 
 @Composable
-fun HomeScreenJoinButton(navController: NavController) {
+fun HomeScreenJoinButton() {
 
     Button(
-        onClick = { navController.navigate("Join") },
+        onClick = { NavigationManager.NavigateToJoinScreen() },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.applegreen),
             contentColor = colorResource(id = R.color.white)
@@ -55,12 +53,13 @@ fun HomeScreenJoinButton(navController: NavController) {
     }
 }
 
+
 @Composable
-fun HomeScreenCreateButton(navController: NavController) {
+fun HomeScreenCreateButton() {
     Button(
         onClick = { authSignOutAndSignInAnonymously()
-                    ConnectToFireStore() //test firestore
-                    navController.navigate("Create") },
+                    CreateLobby() //test firestore
+                    NavigationManager.NavigateToCreateScreen() },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.appleblue),
             contentColor = colorResource(id = R.color.white)
