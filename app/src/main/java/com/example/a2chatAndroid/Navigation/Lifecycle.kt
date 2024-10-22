@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid
+package com.example.a2chatAndroid.Navigation
 
 import android.util.Log
 import androidx.compose.runtime.Composable
@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.example.a2chatAndroid.Firebase.authDeleteAndSignOut
 
 //on the apps close
 @Composable

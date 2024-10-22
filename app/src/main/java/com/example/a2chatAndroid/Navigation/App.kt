@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid
+package com.example.a2chatAndroid.Navigation
 
 import androidx.compose.runtime.Composable
 

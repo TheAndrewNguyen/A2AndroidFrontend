@@ -33,6 +33,9 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.a2chatAndroid.Firebase.authDeleteAndSignOut
+import com.example.a2chatAndroid.Firebase.deleteLobby
+import com.example.a2chatAndroid.Navigation.NavigationManager
 import com.google.firebase.auth.FirebaseAuth
 
 
