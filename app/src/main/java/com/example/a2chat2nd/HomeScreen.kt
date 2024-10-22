@@ -58,7 +58,7 @@ fun HomeScreenJoinButton() {
 fun HomeScreenCreateButton() {
     Button(
         onClick = { authSignOutAndSignInAnonymously()
-                    CreateLobby() //test firestore
+                    createLobby() //test firestore
                     NavigationManager.NavigateToCreateScreen() },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.appleblue),

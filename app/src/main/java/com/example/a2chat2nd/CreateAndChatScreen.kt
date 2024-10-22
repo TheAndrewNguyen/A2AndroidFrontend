@@ -92,7 +92,6 @@ fun EndButton(onClick: () -> Unit) {
 //pop up
 @Composable
 fun EndPopUp(showPopUp: MutableState<Boolean>) {
-    val auth = FirebaseAuth.getInstance() // Get FirebaseAuth instance
     AlertDialog(
         onDismissRequest = { showPopUp.value = false },
         title = { Text(text = "Confirm leave") },
@@ -100,6 +99,7 @@ fun EndPopUp(showPopUp: MutableState<Boolean>) {
         confirmButton = {
             Button(
                 onClick = {
+                    deleteLobby() //delete the lobby
                     authDeleteAndSignOut()
                     NavigationManager.NavigateToHomeScreen()// Navigate on confirmation
                     showPopUp.value = false // Close the dialog

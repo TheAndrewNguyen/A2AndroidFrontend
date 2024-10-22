@@ -28,9 +28,6 @@ fun NavHost() {
 
 
 //navigation functions
-
-
-
 object NavigationManager {
     private lateinit var navController: NavController
 
