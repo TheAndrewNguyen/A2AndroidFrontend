@@ -7,7 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.example.a2chatAndroid.Firebase.authDeleteAndSignOut
+import com.example.a2chatAndroid.Utils.endChat
 
 //on the apps close
 @Composable
@@ -17,14 +17,13 @@ fun LifeCycleManager() {
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if(event == Lifecycle.Event.ON_START) {
-                onAppOpen()
                 Log.d("LifeCycle", "App has been opened")
             }
             else if (event == Lifecycle.Event.ON_STOP || event == Lifecycle.Event.ON_DESTROY) {
-                onAppClose()
+                endChat() //TODO: check if this is creating a bug
                 Log.d("Lifecycle", "App has been closed out of")
             } else {
-                Log.w("LifeCycle", "Nonhandled Current event: $event")
+                Log.w("LifeCycle", "Unhandled Current event: $event")
             }
         }
 
@@ -32,17 +31,9 @@ fun LifeCycleManager() {
         //adding observer to lifecycle
         lifecycleOwner.lifecycle.addObserver(observer)
 
-        //clean up the oberserver when we leave compositino
+        //clean up the observer when we leave compositing
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-}
-
-fun onAppOpen() {
-    NavigationManager.NavigateToHomeScreen() //navigate the user back home screen
-}
-
-fun onAppClose() {
-    authDeleteAndSignOut()
 }

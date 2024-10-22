@@ -1,26 +1,12 @@
 package com.example.a2chatAndroid.Firebase
 
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
 // TODO: Need to find a way to store this on creation better
 var documentID = ""; //document id of the lobby
-
-@Composable
-fun NavigateToJoinScreen() { //navigate to join screen
-    val navController = rememberNavController()
-    navController.navigate("Join")
-}
-
-@Composable
-fun NavigateToCreateScreen() { //navigate to create screen
-    val navController = rememberNavController()
-    navController.navigate("Create")
-}
 
 //connect to firestore instance
 fun connectToFireStore(): FirebaseFirestore {
@@ -66,6 +52,7 @@ fun createLobby() {
 
 //deleting a lobby / document
 fun deleteLobby() {
+    Log.d("FireStore", "Deletion started")
     val db = connectToFireStore()
     val collection = db.collection("lobbies")
 
