@@ -1,10 +1,13 @@
-package com.example.a2chatAndroid
+package com.example.a2chatAndroid.Navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.a2chatAndroid.CreateAndChatScreen
+import com.example.a2chatAndroid.HomeScreen
+import com.example.a2chatAndroid.JoinScreen
 
 @Composable
 fun NavHost() {
