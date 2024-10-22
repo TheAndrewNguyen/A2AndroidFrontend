@@ -1,4 +1,4 @@
-package com.example.a2chat2nd
+package com.example.a2chatAndroid
 
 import org.junit.Test
 

@@ -1,17 +1,10 @@
-package com.example.a2chat2nd
+package com.example.a2chatAndroid
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-
-
-@Composable
-fun App() {
-    NavHost()
-    LifeCycleManager() //call the lifecycle manager
-}
 
 @Composable
 fun NavHost() {
@@ -26,13 +19,12 @@ fun NavHost() {
     }
 }
 
-
 //navigation functions
 object NavigationManager {
     private lateinit var navController: NavController
 
-    fun setNavController(conntroller: NavController) {
-        navController = conntroller
+    fun setNavController(controller: NavController) {
+        navController = controller
     }
 
     fun NavigateToHomeScreen() { //navigate to home screen
@@ -47,5 +39,4 @@ object NavigationManager {
     fun NavigateToCreateScreen() { //navigate to create screen
         navController.navigate("Create")
     }
-
 }

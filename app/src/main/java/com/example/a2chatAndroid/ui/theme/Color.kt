@@ -1,4 +1,4 @@
-package com.example.a2chat2nd.ui.theme
+package com.example.a2chatAndroid.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

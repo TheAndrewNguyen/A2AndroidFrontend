@@ -1,4 +1,4 @@
-package com.example.a2chat2nd
+package com.example.a2chatAndroid
 
 import android.util.Log
 import androidx.compose.runtime.Composable
