@@ -18,10 +18,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 
 @Composable
-fun JoinScreen(navController: NavController) {
+fun JoinScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -29,22 +28,22 @@ fun JoinScreen(navController: NavController) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
-        BackButton(navController)
-        OTPInput(navController)
+        BackButton()
+        OTPInput()
     }
 }
 
 @Composable
-fun BackButton(navController: NavController) {
+fun BackButton() {
     IconButton(onClick = {
-        navController.navigate("Home")
+        NavigationManager.NavigateToHomeScreen() // Navigate back to the home screen
     }, modifier = Modifier.offset(y = 16.dp)) {
         Icon(imageVector = Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back to Home")
     }
 }
 
 @Composable
-fun OTPInput(navController: NavController) {
+fun OTPInput() {
     // State to hold the input for each of the 6 boxes
     val otpDigits = remember { mutableStateListOf("", "", "", "", "", "") }
 
@@ -93,7 +92,7 @@ fun OTPInput(navController: NavController) {
 
             Button(onClick = {
                 // Handle OTP submission logic
-                navController.navigate("Home")
+                NavigationManager.NavigateToHomeScreen()
             }) {
                 Text("Submit")
             }

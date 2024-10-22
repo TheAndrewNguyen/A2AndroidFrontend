@@ -33,29 +33,28 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun CreateScreen(navController: NavController) {
+fun CreateAndChatScreen() {
     val showPopup = remember { mutableStateOf(false) } // State to control popup visibility
-
     Column (
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        TopStrip(navController, showPopup)
+        TopStrip(showPopup)
         MessageDisplay()
         if (showPopup.value) {
-            EndPopUp(navController, showPopup)
+            EndPopUp(showPopup)
         }
     }
 }
 
 //top strip components
 @Composable
-fun TopStrip(navController: NavController, showPopup: MutableState<Boolean>) {
+fun TopStrip(showPopup: MutableState<Boolean>) {
     Row(
         modifier = Modifier
             .padding(top = 16.dp)
@@ -76,8 +75,12 @@ fun JoinCode () {
 
 @Composable
 fun EndButton(onClick: () -> Unit) {
+    val auth = FirebaseAuth.getInstance() // Get FirebaseAuth instance
+
     Button(
-        onClick = { onClick() },
+        onClick = {
+            authDeleteAndSignOut()
+            onClick() },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.bootstrapRed),
         ),
@@ -88,7 +91,7 @@ fun EndButton(onClick: () -> Unit) {
 
 //pop up
 @Composable
-fun EndPopUp(navController: NavController, showPopUp: MutableState<Boolean>) {
+fun EndPopUp(showPopUp: MutableState<Boolean>) {
     AlertDialog(
         onDismissRequest = { showPopUp.value = false },
         title = { Text(text = "Confirm leave") },
@@ -96,7 +99,9 @@ fun EndPopUp(navController: NavController, showPopUp: MutableState<Boolean>) {
         confirmButton = {
             Button(
                 onClick = {
-                    navController.navigate("Home") // Navigate on confirmation
+                    deleteLobby() //delete the lobby
+                    authDeleteAndSignOut()
+                    NavigationManager.NavigateToHomeScreen()// Navigate on confirmation
                     showPopUp.value = false // Close the dialog
                 }
             ) {
