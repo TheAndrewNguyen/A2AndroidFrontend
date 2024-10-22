@@ -1,4 +1,4 @@
-package com.example.a2chat2nd
+package com.example.a2chatAndroid
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 fun authCreateConnection(): FirebaseAuth {
     return try {
         val auth = FirebaseAuth.getInstance()
-        Log.d("Auth", "Connection to FirebaseAuth Succesful")
+        Log.d("Auth", "Connection to FirebaseAuth Successful")
         auth
     } catch(e : Exception) {
         Log.w("Auth", "Connection to FirebaseAuth Failed exception $e") // Log the exception

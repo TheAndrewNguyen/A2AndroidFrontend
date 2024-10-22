@@ -1,4 +1,4 @@
-package com.example.a2chat2nd
+package com.example.a2chatAndroid
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
