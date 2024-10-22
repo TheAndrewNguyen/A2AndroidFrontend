@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">A2chat</string>
+    <string name="app_name">A2chatAndroid</string>
     <string name = "join">Join</string>
     <string name = "create">Create</string>
     <string name = "JoinCode">Join Code: XQZ205 </string>

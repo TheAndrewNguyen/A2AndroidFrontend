@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.a2chat2nd"
+    namespace = "com.example.a2chatAndroid"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.a2chat2nd"
+        applicationId = "com.example.a2chatAndroid"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
