@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid
+package com.example.a2chatAndroid.UiScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +33,10 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.a2chatAndroid.Firebase.authDeleteAndSignOut
+import com.example.a2chatAndroid.Firebase.deleteLobby
+import com.example.a2chatAndroid.Navigation.NavigationManager
+import com.example.a2chatAndroid.R
 import com.google.firebase.auth.FirebaseAuth
 
 

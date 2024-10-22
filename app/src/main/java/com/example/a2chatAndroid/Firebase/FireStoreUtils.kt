@@ -1,9 +1,10 @@
-package com.example.a2chatAndroid
+package com.example.a2chatAndroid.Firebase
 
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
 // TODO: Need to find a way to store this on creation better
@@ -22,7 +23,7 @@ fun NavigateToCreateScreen() { //navigate to create screen
 }
 
 //connect to firestore instance
-fun connectToFireStore(): com.google.firebase.firestore.FirebaseFirestore {
+fun connectToFireStore(): FirebaseFirestore {
     try {
         val db = Firebase.firestore
         Log.d("FireStore", "db connected")

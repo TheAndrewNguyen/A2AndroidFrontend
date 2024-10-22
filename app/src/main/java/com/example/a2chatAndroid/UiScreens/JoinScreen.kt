@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid
+package com.example.a2chatAndroid.UiScreens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.a2chatAndroid.Navigation.NavigationManager
 
 @Composable
 fun JoinScreen() {
