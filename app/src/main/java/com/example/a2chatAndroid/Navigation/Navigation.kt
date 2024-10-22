@@ -5,9 +5,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.a2chatAndroid.CreateAndChatScreen
-import com.example.a2chatAndroid.HomeScreen
-import com.example.a2chatAndroid.JoinScreen
+import com.example.a2chatAndroid.UiScreens.CreateAndChatScreen
+import com.example.a2chatAndroid.UiScreens.HomeScreen
+import com.example.a2chatAndroid.UiScreens.JoinScreen
 
 @Composable
 fun NavHost() {

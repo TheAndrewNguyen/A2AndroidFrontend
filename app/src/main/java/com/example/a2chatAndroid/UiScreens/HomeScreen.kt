@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid
+package com.example.a2chatAndroid.UiScreens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.Firebase.authSignOutAndSignInAnonymously
 import com.example.a2chatAndroid.Firebase.createLobby
 import com.example.a2chatAndroid.Navigation.NavigationManager
+import com.example.a2chatAndroid.R
 
 @Composable
 fun HomeScreen() {
@@ -31,7 +32,6 @@ fun HomeScreen() {
             text = stringResource(id = R.string.app_name),
             style = MaterialTheme.typography.titleLarge
         )
-
 
         // Join and Create buttons
         HomeScreenJoinButton()
