@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid
+package com.example.a2chatAndroid.UiScreens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
