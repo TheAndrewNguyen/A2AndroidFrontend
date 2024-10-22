@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.a2chatAndroid.UiScreens.CreateAndChatScreen
+import com.example.a2chatAndroid.UiScreens.ChatScreen
 import com.example.a2chatAndroid.UiScreens.HomeScreen
 import com.example.a2chatAndroid.UiScreens.JoinScreen
 
@@ -18,7 +18,7 @@ fun NavHost() {
     NavHost(navController = navController, startDestination = "Home") {
         composable("Home") { HomeScreen() }
         composable("Join") { JoinScreen() }
-        composable("Create") { CreateAndChatScreen() }
+        composable("Create") { ChatScreen() }
     }
 }
 
@@ -30,16 +30,16 @@ object NavigationManager {
         navController = controller
     }
 
-    fun NavigateToHomeScreen() { //navigate to home screen
+    fun navigateToHomeScreen() { //navigate to home screen
         navController.navigate("Home")
     }
 
 
-    fun NavigateToJoinScreen() { //navigate to join screen
+    fun navigateToJoinScreen() { //navigate to join screen
         navController.navigate("Join")
     }
 
-    fun NavigateToCreateScreen() { //navigate to create screen
+    fun navigateToChatScreen() { //navigate to create screen
         navController.navigate("Create")
     }
 }

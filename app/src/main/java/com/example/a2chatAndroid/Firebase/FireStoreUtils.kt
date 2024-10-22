@@ -66,6 +66,7 @@ fun createLobby() {
 
 //deleting a lobby / document
 fun deleteLobby() {
+    Log.d("Firestore", "Deletion started")
     val db = connectToFireStore()
     val collection = db.collection("lobbies")
 

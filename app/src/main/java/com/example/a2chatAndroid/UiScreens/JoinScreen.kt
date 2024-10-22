@@ -37,7 +37,7 @@ fun JoinScreen() {
 @Composable
 fun BackButton() {
     IconButton(onClick = {
-        NavigationManager.NavigateToHomeScreen() // Navigate back to the home screen
+        NavigationManager.navigateToHomeScreen() // Navigate back to the home screen
     }, modifier = Modifier.offset(y = 16.dp)) {
         Icon(imageVector = Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back to Home")
     }
@@ -93,7 +93,7 @@ fun OTPInput() {
 
             Button(onClick = {
                 // Handle OTP submission logic
-                NavigationManager.NavigateToHomeScreen()
+                NavigationManager.navigateToHomeScreen()
             }) {
                 Text("Submit")
             }

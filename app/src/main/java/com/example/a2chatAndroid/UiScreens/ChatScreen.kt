@@ -33,15 +33,12 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.a2chatAndroid.Firebase.authDeleteAndSignOut
-import com.example.a2chatAndroid.Firebase.deleteLobby
-import com.example.a2chatAndroid.Navigation.NavigationManager
 import com.example.a2chatAndroid.R
-import com.google.firebase.auth.FirebaseAuth
+import com.example.a2chatAndroid.Utils.endChat
 
 
 @Composable
-fun CreateAndChatScreen() {
+fun ChatScreen() {
     val showPopup = remember { mutableStateOf(false) } // State to control popup visibility
     Column (
         modifier = Modifier
@@ -79,12 +76,8 @@ fun JoinCode () {
 
 @Composable
 fun EndButton(onClick: () -> Unit) {
-    val auth = FirebaseAuth.getInstance() // Get FirebaseAuth instance
-
     Button(
-        onClick = {
-            authDeleteAndSignOut()
-            onClick() },
+        onClick = { onClick() },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.bootstrapRed),
         ),
@@ -103,9 +96,7 @@ fun EndPopUp(showPopUp: MutableState<Boolean>) {
         confirmButton = {
             Button(
                 onClick = {
-                    deleteLobby() //delete the lobby
-                    authDeleteAndSignOut()
-                    NavigationManager.NavigateToHomeScreen()// Navigate on confirmation
+                    endChat()
                     showPopUp.value = false // Close the dialog
                 }
             ) {

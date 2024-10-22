@@ -15,10 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.a2chatAndroid.Firebase.authSignOutAndSignInAnonymously
-import com.example.a2chatAndroid.Firebase.createLobby
 import com.example.a2chatAndroid.Navigation.NavigationManager
 import com.example.a2chatAndroid.R
+import com.example.a2chatAndroid.Utils.startChat
 
 @Composable
 fun HomeScreen() {
@@ -42,9 +41,8 @@ fun HomeScreen() {
 
 @Composable
 fun HomeScreenJoinButton() {
-
     Button(
-        onClick = { NavigationManager.NavigateToJoinScreen() },
+        onClick = { NavigationManager.navigateToJoinScreen() },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.applegreen),
             contentColor = colorResource(id = R.color.white)
@@ -60,9 +58,7 @@ fun HomeScreenJoinButton() {
 @Composable
 fun HomeScreenCreateButton() {
     Button(
-        onClick = { authSignOutAndSignInAnonymously()
-            createLobby() //test firestore
-                    NavigationManager.NavigateToCreateScreen() },
+        onClick = { startChat() },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.appleblue),
             contentColor = colorResource(id = R.color.white)
