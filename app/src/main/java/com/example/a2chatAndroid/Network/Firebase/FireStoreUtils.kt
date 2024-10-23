@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.Firebase
+package com.example.a2chatAndroid.Network.Firebase
 
 import android.util.Log
 import com.google.firebase.Firebase
@@ -6,7 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
 // TODO: Need to find a way to store this on creation better
-var documentID = ""; //document id of the lobby
+var documentID = "" //document id of the lobby
 
 //connect to firestore instance
 fun connectToFireStore(): FirebaseFirestore {

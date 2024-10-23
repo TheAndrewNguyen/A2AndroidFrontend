@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.a2chatAndroid.Navigation.NavigationManager
+import com.example.a2chatAndroid.Network.RetrofitApi.fetchTestData
 
 @Composable
 fun JoinScreen() {
@@ -91,10 +92,10 @@ fun OTPInput() {
                 }
             }
 
-            Button(onClick = {
-                // Handle OTP submission logic
-                NavigationManager.navigateToHomeScreen()
-            }) {
+            Button(
+                onClick = {fetchTestData() }
+            )
+            {
                 Text("Submit")
             }
         }

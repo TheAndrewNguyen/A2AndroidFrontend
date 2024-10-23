@@ -8,4 +8,3 @@ fun App() {
     NavHost() //uis and navigation
     LifeCycleManager() //call the lifecycle manager
 }
-
