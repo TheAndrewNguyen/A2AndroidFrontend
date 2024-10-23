@@ -1,9 +1,7 @@
 package com.example.a2chatAndroid.Network.RetrofitApi
 
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.http.GET
 
 //retrofit instance
 object RetroFitClient {
@@ -15,7 +13,3 @@ object RetroFitClient {
         .build()
 }
 
-interface BackEndApiService {
-    @GET("/")
-    fun test() : Call<String> //returns a string
-}

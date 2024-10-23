@@ -20,7 +20,7 @@ fun LifeCycleManager() {
                 Log.d("LifeCycle", "App has been opened")
             }
             else if (event == Lifecycle.Event.ON_STOP || event == Lifecycle.Event.ON_DESTROY) {
-                endChat() //TODO: check if this is creating a bug
+                endChat()
                 Log.d("Lifecycle", "App has been closed out of")
             } else {
                 Log.w("LifeCycle", "Unhandled Current event: $event")
