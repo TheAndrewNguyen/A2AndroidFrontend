@@ -1,15 +1,17 @@
 package com.example.a2chatAndroid.Utils
 
+import android.util.Log
 import com.example.a2chatAndroid.Network.CallBacks.LobbyManager
 import com.example.a2chatAndroid.Network.RetrofitApi.firestoreCreateLobby
 
+val masterLobbyManager = LobbyManager()
+
 //starting a chat
 fun startChat() {
-    val lobbyManager = LobbyManager()
-    firestoreCreateLobby(lobbyManager)
+    Log.d("Chat", "Start chat called")
+    firestoreCreateLobby(masterLobbyManager)
 }
 
-//Todo: app is crashing when we end a chat
 //ending a chat
 /*fun endChat() {
 }*/

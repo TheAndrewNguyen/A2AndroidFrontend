@@ -3,6 +3,7 @@ package com.example.a2chatAndroid.Network.CallBacks
 import android.util.Log
 import com.example.a2chatAndroid.Navigation.NavigationManager
 
+
 //get the lobby code from createLobby
 interface LobbyResponseCallback {
     fun onLobbyCreated(lobbyCode: String)
@@ -11,14 +12,12 @@ interface LobbyResponseCallback {
 
 class LobbyManager : LobbyResponseCallback {
     private var storedLobbyCode : String? = null
-    private var storedErrorMessage : String? = null
+    private var storedErrorMessage: String? = null
 
     override fun onLobbyCreated(lobbyCode: String) {
         storedLobbyCode = lobbyCode
-        Log.d("Lobby Manager", "Lobby created with code: $lobbyCode")
-        val test = getStoredLobbyCode()
-        Log.d("Lobby Manager", "Test call code:${test}")
-        //navigate to create screen
+        Log.d("Lobby Manager", "onLobbyCreated called, Lobby created with code: from get stored lobby code " + getStoredLobbyCode())
+
         NavigationManager.navigateToChatScreen()
     }
 
@@ -27,7 +26,6 @@ class LobbyManager : LobbyResponseCallback {
     }
 
     fun getStoredLobbyCode() : String? {
-        Log.d("Lobby Manager", "getStoredLobbyCode called, current code: $storedLobbyCode")
         return storedLobbyCode
     }
 

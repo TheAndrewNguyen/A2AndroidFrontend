@@ -1,5 +1,6 @@
 package com.example.a2chatAndroid.UiScreens
 
+//import com.example.a2chatAndroid.Utils.endChat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,12 +32,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.R
-//import com.example.a2chatAndroid.Utils.endChat
 
-
+//TODO: refactor chat screen and add comments so its more sensible
 @Composable
 fun ChatScreen() {
     val showPopup = remember { mutableStateOf(false) } // State to control popup visibility
@@ -71,9 +70,11 @@ fun TopStrip(showPopup: MutableState<Boolean>) {
 
 @Composable
 fun JoinCode () {
-    Text(stringResource(id = R.string.JoinCode));
+    var lobbyManager = com.example.a2chatAndroid.Utils.masterLobbyManager
+    Text("Lobby code " + lobbyManager.getStoredLobbyCode());
 }
 
+//the red end button
 @Composable
 fun EndButton(onClick: () -> Unit) {
     Button(
@@ -86,7 +87,7 @@ fun EndButton(onClick: () -> Unit) {
     }
 }
 
-//pop up
+//pop up when user presses end button
 @Composable
 fun EndPopUp(showPopUp: MutableState<Boolean>) {
     AlertDialog(
