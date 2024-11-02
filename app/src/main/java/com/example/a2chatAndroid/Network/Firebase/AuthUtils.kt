@@ -4,22 +4,23 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-//create connection to firebase
+val auth = authCreateConnection()
+
+//create connection to firebase and returns the instance
 fun authCreateConnection(): FirebaseAuth {
     return try {
         val auth = FirebaseAuth.getInstance()
         Log.d("Auth", "Connection to FirebaseAuth Successful")
-        auth
+        return auth
     } catch(e : Exception) {
         Log.w("Auth", "Connection to FirebaseAuth Failed exception $e") // Log the exception
         throw e // Rethrow the exception to handle it in the caller
     }
 }
 
+//TODO: Fix to instance thing
 //get current user that is signed in
 fun authGetCurrentUser(): FirebaseUser? {
-    val auth = authCreateConnection()
-
     val current_user = auth.currentUser
 
     if(current_user == null) {
@@ -33,7 +34,6 @@ fun authGetCurrentUser(): FirebaseUser? {
 
 //sign out /end connection
 fun authSignOut() {
-    val auth = authCreateConnection()
     try {
         auth.signOut()
         Log.d("Auth", "User signed out successfully")
@@ -44,7 +44,8 @@ fun authSignOut() {
 
 //sign in anonymously
 fun authSignInAnonymously() {
-    val auth = authCreateConnection()
+    //sign out first just in case
+    authSignOut()
     auth.signInAnonymously()
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -57,17 +58,9 @@ fun authSignInAnonymously() {
         }
 }
 
-// Function to sign out and then sign in anonymously
-fun authSignOutAndSignInAnonymously() {
-    authSignOut()           // Sign out the current user
-    authSignInAnonymously() // Sign in anonymously
-}
-
 //removing user from auth and signing out the user
 // TODO: BUG IN LOGGING CHECK REAL AUTH FOR TESTING will fix later with threads
 fun authDeleteAndSignOut() {
-    val auth = authCreateConnection()       //connect to auth
-
     val current_user = authGetCurrentUser()
 
     if(current_user == null) {
