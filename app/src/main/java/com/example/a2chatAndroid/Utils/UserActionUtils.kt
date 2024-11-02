@@ -13,5 +13,8 @@ fun startChat() {
 }
 
 //ending a chat
-/*fun endChat() {
-}*/
+fun endChat() {
+    //sign out user
+    //delete all users from lobby using the api call
+    //navigate back to home screen
+}

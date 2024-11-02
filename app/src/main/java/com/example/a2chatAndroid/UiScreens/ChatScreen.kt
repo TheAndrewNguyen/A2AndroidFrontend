@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.R
+import com.example.a2chatAndroid.Utils.endChat
 
 
 //Main composable
@@ -47,7 +48,7 @@ fun ChatScreen() {
     ) {
         TopStrip(showPopup)
         MessageDisplay()
-        if (showPopup.value) {
+        if (showPopup.value == true) {
             EndPopUp(showPopup)
         }
     }
@@ -71,13 +72,11 @@ fun TopStrip(showPopup: MutableState<Boolean>) {
     }
 }
 
-
-
 //the red end button
 @Composable
 fun EndButton(onClick: () -> Unit) {
     Button(
-        onClick = { onClick() },
+        onClick = { onClick() }, //call the end popup
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.bootstrapRed),
         ),
@@ -96,7 +95,7 @@ fun EndPopUp(showPopUp: MutableState<Boolean>) {
         confirmButton = {
             Button(
                 onClick = {
-                    //TODO: endChat()
+                    endChat()
                     showPopUp.value = false // Close the dialog
                 }
             ) {
