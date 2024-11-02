@@ -44,8 +44,7 @@ fun authSignOut() {
 
 //sign in anonymously
 fun authSignInAnonymously() {
-    //sign out first just in case
-    authSignOut()
+    authSignOut() //sign out first just in case
     auth.signInAnonymously()
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -59,18 +58,17 @@ fun authSignInAnonymously() {
 }
 
 //removing user from auth and signing out the user
-// TODO: BUG IN LOGGING CHECK REAL AUTH FOR TESTING will fix later with threads
 fun authDeleteAndSignOut() {
-    val current_user = authGetCurrentUser()
+    val currentUser = authGetCurrentUser()
 
-    if(current_user == null) {
+    if(currentUser == null) {
         Log.w("Auth", "No current user logged in")
         return
     }
 
-    val userID = current_user.uid
+    val userID = currentUser.uid
 
-    current_user.delete()
+    currentUser.delete()
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val updatedUser = auth.currentUser
