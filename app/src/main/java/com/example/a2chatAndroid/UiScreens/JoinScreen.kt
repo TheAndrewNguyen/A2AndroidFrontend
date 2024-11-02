@@ -19,7 +19,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.a2chatAndroid.Navigation.NavigationManager
-import com.example.a2chatAndroid.Network.RetrofitApi.fetchCode
 
 @Composable
 fun JoinScreen() {
@@ -93,7 +92,7 @@ fun OTPInput() {
             }
 
             Button(
-                onClick = { fetchCode() }
+                onClick = { /*TODO: Join user into chat room and navigate to chat screen*/ }
             )
             {
                 Text("Submit")

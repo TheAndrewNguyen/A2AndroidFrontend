@@ -1,13 +1,15 @@
 package com.example.a2chatAndroid.Network.RetrofitApi
 
-import android.content.ClipData.Item
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.POST
+
 
 interface BackEndApiService {
-    @GET("/test")
+    @GET("/test/getcode")
     fun test() : Call<String> //returns a string
 
-    @GET("/getCode")
-    fun getCode() : Call<List<Item>> //returns a string
+    //firestore endpoints
+    @POST("/firestore/createLobby")
+    fun createLobby() : Call<LobbyResponse>
 }

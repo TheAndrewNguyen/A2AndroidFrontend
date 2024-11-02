@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <domain-config cleartextTrafficPermitted="true">
+    <domain-config cleartextTrafficPermitted="false"> <!-- Consider setting this to false for security -->
+        <domain includeSubdomains="true">a2chat.mooo.com</domain>
         <domain includeSubdomains="true">18.117.87.87</domain>
-        <domain includeSubdomains="true">ec2-18-117-87-87.us-east-2.compute.amazonaws.com</domain>
+        <trust-anchors>
+            <certificates src="@raw/a2chat" /> <!-- Ensure the file is in res/raw with the right name -->
+        </trust-anchors>
     </domain-config>
 </network-security-config>

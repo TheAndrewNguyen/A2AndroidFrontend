@@ -1,22 +1,15 @@
 package com.example.a2chatAndroid.Utils
 
-import com.example.a2chatAndroid.Navigation.NavigationManager
-import com.example.a2chatAndroid.Network.Firebase.authDeleteAndSignOut
-import com.example.a2chatAndroid.Network.Firebase.authSignOutAndSignInAnonymously
-import com.example.a2chatAndroid.Network.Firebase.createLobby
-import com.example.a2chatAndroid.Network.Firebase.deleteLobby
+import com.example.a2chatAndroid.Network.CallBacks.LobbyManager
+import com.example.a2chatAndroid.Network.RetrofitApi.firestoreCreateLobby
 
 //starting a chat
 fun startChat() {
-    authSignOutAndSignInAnonymously()
-    createLobby()
-    NavigationManager.navigateToChatScreen()
+    val lobbyManager = LobbyManager()
+    firestoreCreateLobby(lobbyManager)
 }
 
 //Todo: app is crashing when we end a chat
 //ending a chat
-fun endChat() {
-    deleteLobby()
-    authDeleteAndSignOut()
-    NavigationManager.navigateToHomeScreen()
-}
+/*fun endChat() {
+}*/

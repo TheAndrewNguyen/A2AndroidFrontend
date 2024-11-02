@@ -34,7 +34,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.R
-import com.example.a2chatAndroid.Utils.endChat
+//import com.example.a2chatAndroid.Utils.endChat
 
 
 @Composable
@@ -96,7 +96,7 @@ fun EndPopUp(showPopUp: MutableState<Boolean>) {
         confirmButton = {
             Button(
                 onClick = {
-                    endChat()
+                    //TODO: endChat()
                     showPopUp.value = false // Close the dialog
                 }
             ) {

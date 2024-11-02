@@ -7,7 +7,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.example.a2chatAndroid.Utils.endChat
 
 //on the apps close
 @Composable
@@ -20,7 +19,7 @@ fun LifeCycleManager() {
                 Log.d("LifeCycle", "App has been opened")
             }
             else if (event == Lifecycle.Event.ON_STOP || event == Lifecycle.Event.ON_DESTROY) {
-                endChat()
+                //endChat()
                 Log.d("Lifecycle", "App has been closed out of")
             } else {
                 Log.w("LifeCycle", "Unhandled Current event: $event")
