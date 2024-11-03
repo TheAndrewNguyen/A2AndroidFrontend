@@ -1,39 +1,28 @@
 package com.example.a2chatAndroid.Network.Firebase
 
 import android.util.Log
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.auth
 
-val auth = authCreateConnection()
+//auth instance
+private lateinit var auth: FirebaseAuth
 
 //create connection to firebase and returns the instance
 fun authCreateConnection(): FirebaseAuth {
-    return try {
+    try {
         val auth = FirebaseAuth.getInstance()
         Log.d("Auth", "Connection to FirebaseAuth Successful")
         return auth
-    } catch(e : Exception) {
+    } catch (e: Exception) {
         Log.w("Auth", "Connection to FirebaseAuth Failed exception $e") // Log the exception
         throw e // Rethrow the exception to handle it in the caller
     }
 }
 
-//TODO: Fix to instance thing
-//get current user that is signed in
-fun authGetCurrentUser(): FirebaseUser? {
-    val current_user = auth.currentUser
-
-    if(current_user == null) {
-        Log.w("Auth", "No current user logged in")
-    } else {
-        Log.d("Auth", "Current user: $current_user")
-    }
-
-    return auth.currentUser //might be null if no current user see log cat
-}
-
 //sign out /end connection
 fun authSignOut() {
+    auth = Firebase.auth
     try {
         auth.signOut()
         Log.d("Auth", "User signed out successfully")
@@ -42,31 +31,40 @@ fun authSignOut() {
     }
 }
 
-//sign in anonymously
-fun authSignInAnonymously() {
-    authSignOut() //sign out first just in case
-    auth.signInAnonymously()
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Sign-in success
-                Log.d("Auth", "Sign in succesful") //login succesful
-            } else {
-                // If sign-in fails, log the error
-                Log.w("Auth", "sign in failure:", task.getException()) // Log error message
+//sign in anonymously and return user string
+suspend fun authSignInAnonymously(): String? {
+    auth = Firebase.auth
+
+    //TODO: find out how to do signout outs asycly but for now this is fine
+
+    return try {
+        auth.signInAnonymously()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Sign-in success
+                    Log.d("Auth", "Sign in succesful") //login succesful
+                } else {
+                    // If sign-in fails, log the error
+                    Log.w("Auth", "sign in failure:", task.getException()) // Log error message
+                }
             }
-        }
+        auth.currentUser?.uid //return the auth user's uid in string form
+    } catch(e : Error) {
+        Log.w("Auth", "There was a sign in error", e)
+        null //return null
+    }
 }
 
 //removing user from auth and signing out the user
 fun authDeleteAndSignOut() {
-    val currentUser = authGetCurrentUser()
+    val currentUser = Firebase.auth.currentUser
 
-    if(currentUser == null) {
+    if (currentUser == null) {
         Log.w("Auth", "No current user logged in")
         return
     }
 
-    val userID = currentUser.uid
+    val userID = Firebase.auth.currentUser?.uid
 
     currentUser.delete()
         .addOnCompleteListener { task ->
