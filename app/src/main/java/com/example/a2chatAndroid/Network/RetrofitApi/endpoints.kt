@@ -1,6 +1,7 @@
 package com.example.a2chatAndroid.Network.RetrofitApi
 
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -12,8 +13,8 @@ interface BackEndApiService {
 
     //firestore endpoints
     @POST("/firestore/createLobby")
-    fun createLobby() : Call<OnLobbyCreateResponse>
+    suspend fun createLobby() : Response<OnLobbyCreateResponse>
 
     @PUT
-    fun addUserToLobby() : Call<OnLobbyCreateResponse>
+    fun addUserToLobby() : Response<OnLobbyCreateResponse>
 }

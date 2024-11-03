@@ -1,8 +1,8 @@
 package com.example.a2chatAndroid.Network.CallBacks
 
 import android.util.Log
-import com.example.a2chatAndroid.Navigation.NavigationManager
 
+val masterLobbyManager = LobbyManager()
 
 //get the lobby code from createLobby
 interface LobbyResponseCallback {
@@ -17,8 +17,6 @@ class LobbyManager : LobbyResponseCallback {
     override fun onLobbyCreated(lobbyCode: String) {
         storedLobbyCode = lobbyCode
         Log.d("Lobby Manager", "onLobbyCreated called, Lobby created with code: from get stored lobby code " + getStoredLobbyCode())
-
-        NavigationManager.navigateToChatScreen()
     }
 
     override fun onLobbyCreatedError(errorMessage: String) {

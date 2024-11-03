@@ -37,6 +37,7 @@ suspend fun authSignInAnonymously(): String? {
 
     //TODO: find out how to do signout outs asycly but for now this is fine
 
+    //currently done asyncly
     return try {
         auth.signInAnonymously()
             .addOnCompleteListener { task ->
@@ -53,6 +54,10 @@ suspend fun authSignInAnonymously(): String? {
         Log.w("Auth", "There was a sign in error", e)
         null //return null
     }
+}
+
+fun authGetCurrentUser(): String? {
+    return auth.currentUser?.uid
 }
 
 //removing user from auth and signing out the user

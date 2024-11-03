@@ -1,7 +1,6 @@
 package com.example.a2chatAndroid.Network.RetrofitApi
 
 import android.util.Log
-import com.example.a2chatAndroid.Network.CallBacks.LobbyResponseCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,30 +30,36 @@ fun fetchTestData() {
 }
 
 //makes api request for /firestore/createLobby
-fun firestoreCreateLobby(callback : LobbyResponseCallback) {
-    Log.d("Retrofit", "Create Lobby called")
-    val apiService = RetroFitClient.retrofit.create(BackEndApiService::class.java)
-    apiService.createLobby().enqueue(object : Callback<OnLobbyCreateResponse> {
-        override fun onResponse(call: Call<OnLobbyCreateResponse>, response: Response<OnLobbyCreateResponse>) {
-            if (response.isSuccessful) { //succesful call
-                val data = response.body()
-                if (data != null) {
-                    Log.d("Retrofit", "Lobby crated succesfuly with lobby code: ${data.code}")
-                    callback.onLobbyCreated(data.code)
-                } else {
-                    Log.w("Retrofit", "Response body is null")
-                }
-            } else { //failure at the response level
-                val error_message = response.errorBody()?.string()
-                callback.onLobbyCreatedError(error_message ?: "Unknown error")
-                Log.w("Retrofit", "Response not successful: ${error_message}")
+suspend fun firestoreCreateLobby(): Result<String> {
+    return try {
+        Log.d("Retrofit", "Create Lobby called")
+        val apiService = RetroFitClient.retrofit.create(BackEndApiService::class.java)
+        val response = apiService.createLobby()
+
+        //repsonse was succesful
+        if (response.isSuccessful) {
+            val data = response.body()
+            val lobbyCode = data?.code
+            if (lobbyCode != null) {
+                Result.success(lobbyCode)
+            } else {
+                Log.w("Retrofit", "Response body is null")
+                Result.failure(Exception("Response body is null"))
             }
+
+        } else {
+            Log.w("Retrofit", "Response not successful: ${response.errorBody()?.string()}")
+            Result.failure(Exception("Error while calling the api"))
         }
 
-        //failure at the network level
-        override fun onFailure(call: Call<OnLobbyCreateResponse>, t: Throwable) {
-            callback.onLobbyCreatedError("Request failed at the network level" + t.message)
-            Log.w("Retrofit", "Request failed at the network level", t)
-        }
-    })
+    } catch(e : Exception) {
+        Log.w("Retrofit", "Request failed at network level with exception:", e)
+        Result.failure(Exception("Request failed at the network level" + e.message))
+    }
+}
+
+//makes api request for /firestore/addUserToLobby
+fun firestoreAddUserToLobby(lobbyCode : String, uid : String) {
+    //get lobby code from masterLobbyManager
+    Log.d("Retrofit", "User logged in: ${uid} with lobby Code: ${lobbyCode}")
 }
