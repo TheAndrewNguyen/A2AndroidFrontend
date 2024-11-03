@@ -12,8 +12,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
-
-//TODO: find a way to await for each step to finish before going
 //starting a chat
 suspend fun startChat() {
     Log.d("Chat", "Start chat called")
