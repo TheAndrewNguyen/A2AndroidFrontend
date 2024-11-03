@@ -34,8 +34,8 @@ fun fetchTestData() {
 fun firestoreCreateLobby(callback : LobbyResponseCallback) {
     Log.d("Retrofit", "Create Lobby called")
     val apiService = RetroFitClient.retrofit.create(BackEndApiService::class.java)
-    apiService.createLobby().enqueue(object : Callback<LobbyResponse> {
-        override fun onResponse(call: Call<LobbyResponse>, response: Response<LobbyResponse>) {
+    apiService.createLobby().enqueue(object : Callback<OnLobbyCreateResponse> {
+        override fun onResponse(call: Call<OnLobbyCreateResponse>, response: Response<OnLobbyCreateResponse>) {
             if (response.isSuccessful) { //succesful call
                 val data = response.body()
                 if (data != null) {
@@ -52,7 +52,7 @@ fun firestoreCreateLobby(callback : LobbyResponseCallback) {
         }
 
         //failure at the network level
-        override fun onFailure(call: Call<LobbyResponse>, t: Throwable) {
+        override fun onFailure(call: Call<OnLobbyCreateResponse>, t: Throwable) {
             callback.onLobbyCreatedError("Request failed at the network level" + t.message)
             Log.w("Retrofit", "Request failed at the network level", t)
         }
