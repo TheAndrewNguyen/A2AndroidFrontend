@@ -5,6 +5,8 @@ import com.example.a2chatAndroid.Navigation.NavigationManager
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.Network.Firebase.authSignInAnonymously
+import com.example.a2chatAndroid.Network.Firebase.authSignOut
+import com.example.a2chatAndroid.Network.Firebase.safeSignOutandSignInAnonymously
 import com.example.a2chatAndroid.Network.RetrofitApi.firestoreAddUserToLobby
 import com.example.a2chatAndroid.Network.RetrofitApi.firestoreCreateLobby
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +20,7 @@ suspend fun startChat() {
     try {
         //tasks need to finish before addding user to lobby
         coroutineScope {
+            //signing out
             val deferredTasks = listOf(
                 async(Dispatchers.IO) {
                     Log.d("Chat", "Creating Lobby...")
@@ -29,9 +32,16 @@ suspend fun startChat() {
                             Log.w("Chat", "Error while creating lobby with error code ", error)
                         }
                },
+                //signing in anonymously
                 async(Dispatchers.IO) {
                     Log.d("Chat", "Signing in Anonymously...")
-                    authSignInAnonymously()
+                    safeSignOutandSignInAnonymously()
+                        .onSuccess { message ->
+                            Log.d("Chat", "User signed in with UID: ${message}")
+                        }
+                        .onFailure {
+                            Log.w("Chat", "Error while signing in with error code ", it)
+                        }
                 }
             )
             deferredTasks.awaitAll()
@@ -95,10 +105,9 @@ suspend fun JoinChat(lobbyCode: String) {
     NavigationManager.navigateToChatScreen()
 }
 
-//TODO: implementEndChat
-fun endChat() {
-    //sign out user
-    //delete all users from lobby using the api call
+suspend fun endChat() {
+    authSignOut()
+    //delete the lobby with an api call and remove users??? //TODO: ask alex about this
     //navigate back to home screen
 }
 
