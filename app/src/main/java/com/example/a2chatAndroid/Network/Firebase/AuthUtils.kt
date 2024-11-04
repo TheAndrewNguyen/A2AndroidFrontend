@@ -17,7 +17,7 @@ fun authGetCurrentUser(): String? {
 }
 
 //sign out /end connection
-suspend fun authSignOut(): Any = suspendCancellableCoroutine { cont->
+suspend fun authSignOut(): Result<String> = suspendCancellableCoroutine { cont->
     auth = Firebase.auth
     if(auth.currentUser != null) {
         try {
