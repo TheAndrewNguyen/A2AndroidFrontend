@@ -51,10 +51,15 @@ suspend fun startChat() {
                 Log.d("Chat", "User added to lobby with message: $message")
             }
             .onFailure { error ->
+                throw Error("Error while adding user to lobby with error code: $error")
                 Log.w("Chat", "Error while adding user to lobby with error code: ", error)
             }
 
-        //TODO: add error handling if any of the above calls fail
+        if(authGetCurrentUser() == null || masterLobbyManager.getStoredLobbyCode() == null) {
+            Log.w("Chat", "User or lobby code is null start chat failed")
+            throw Error("User or lobby code is null")
+        }
+
         //navigate to chatScreen
         Log.d("Chat", "Navigation called")
         NavigationManager.navigateToChatScreen()
@@ -67,8 +72,27 @@ suspend fun startChat() {
     }
 }
 
-//TODO: implement JoinChat
-fun JoinChat(lobbyCode: String, uid: String) {
+//function for when user joins a chat
+suspend fun JoinChat(lobbyCode: String) {
+
+    val uid = authSignInAnonymously()
+
+    if(uid == null) {
+        Log.w("Chat", "Could not join chat because UID is null")
+        throw Error("User is null")
+    }
+
+    firestoreAddUserToLobby(uid.toString(), lobbyCode)
+        .onSuccess {
+            Log.d("Chat", "User: ${uid} joined lobby: ${lobbyCode} succesfully")
+            masterLobbyManager.onLobbyCreated(lobbyCode)
+        }
+        .onFailure { error ->
+            Log.w("Chat", "Failed to add user to lobby error: ${error}")
+            throw Error("Failed to add user to lobby")
+        }
+
+    NavigationManager.navigateToChatScreen()
 }
 
 //TODO: implementEndChat
@@ -76,4 +100,9 @@ fun endChat() {
     //sign out user
     //delete all users from lobby using the api call
     //navigate back to home screen
+}
+
+//TODO: implmeent error handling
+fun onFailCreationOrLogin() {
+
 }
