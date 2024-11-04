@@ -10,6 +10,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -18,11 +19,12 @@ import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.Navigation.NavigationManager
 import com.example.a2chatAndroid.R
 import com.example.a2chatAndroid.Utils.startChat
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen() {
     // State to track sign-in status
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -57,8 +59,14 @@ fun HomeScreenJoinButton() {
 
 @Composable
 fun HomeScreenCreateButton() {
+    val coroutineScope = rememberCoroutineScope()
+
     Button(
-        onClick = { startChat() },
+        onClick = {
+            coroutineScope.launch {
+                startChat()
+            }
+        },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.appleblue),
             contentColor = colorResource(id = R.color.white)

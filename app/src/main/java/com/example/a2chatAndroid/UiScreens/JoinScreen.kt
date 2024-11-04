@@ -91,10 +91,10 @@ fun OTPInput() {
                 }
             }
 
-            Button(onClick = {
-                // Handle OTP submission logic
-                NavigationManager.navigateToHomeScreen()
-            }) {
+            Button(
+                onClick = { /*TODO: Join user into chat room and navigate to chat screen*/ }
+            )
+            {
                 Text("Submit")
             }
         }

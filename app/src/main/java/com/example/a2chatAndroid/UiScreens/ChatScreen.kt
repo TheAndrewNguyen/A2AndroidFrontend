@@ -1,5 +1,6 @@
 package com.example.a2chatAndroid.UiScreens
 
+//import com.example.a2chatAndroid.Utils.endChat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,12 +32,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.R
 import com.example.a2chatAndroid.Utils.endChat
 
 
+//Main composable
 @Composable
 fun ChatScreen() {
     val showPopup = remember { mutableStateOf(false) } // State to control popup visibility
@@ -47,13 +49,15 @@ fun ChatScreen() {
     ) {
         TopStrip(showPopup)
         MessageDisplay()
-        if (showPopup.value) {
+        if (showPopup.value == true) {
             EndPopUp(showPopup)
         }
     }
 }
 
-//top strip components
+//LAYOUT
+
+//top strip
 @Composable
 fun TopStrip(showPopup: MutableState<Boolean>) {
     Row(
@@ -69,15 +73,11 @@ fun TopStrip(showPopup: MutableState<Boolean>) {
     }
 }
 
-@Composable
-fun JoinCode () {
-    Text(stringResource(id = R.string.JoinCode));
-}
-
+//the red end button
 @Composable
 fun EndButton(onClick: () -> Unit) {
     Button(
-        onClick = { onClick() },
+        onClick = { onClick() }, //call the end popup
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.bootstrapRed),
         ),
@@ -86,7 +86,7 @@ fun EndButton(onClick: () -> Unit) {
     }
 }
 
-//pop up
+//pop up when user presses end button
 @Composable
 fun EndPopUp(showPopUp: MutableState<Boolean>) {
     AlertDialog(
@@ -113,26 +113,8 @@ fun EndPopUp(showPopUp: MutableState<Boolean>) {
     )
 }
 
-//messages
-@Composable
-fun Message(message: String) {
-    Box(
-        modifier = Modifier
-            .wrapContentSize()
-            .clip(shape = RoundedCornerShape(30.dp))
-            .background(colorResource(R.color.appleblue))
-            .padding(15.dp)
-    ) {
-        Column {
-            Text(
-                text = message,
-                color = colorResource(R.color.white),
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
-        }
-    }
-}
 
+//Message box
 @Composable
 fun MessageDisplay() {
     val scrollState = rememberScrollState()
@@ -168,6 +150,7 @@ fun MessageDisplay() {
     }
 }
 
+//Message input area
 @Composable
 fun MessageInput() {
     val message = remember { mutableStateOf("") }
@@ -197,7 +180,7 @@ fun MessageInput() {
         Spacer(modifier = Modifier.width(8.dp))
 
         Button(
-            onClick = { /*TODO */ },
+            onClick = { /*TODO SEND BUTTON */ },
             modifier = Modifier.weight(0.4f)
         ) {
             Text("Send")
@@ -205,4 +188,31 @@ fun MessageInput() {
     }
 }
 
+//helper composables:
 
+//Join code Composable part of top strip
+@Composable
+fun JoinCode () {
+    var lobbyManager = masterLobbyManager
+    Text("Lobby code " + lobbyManager.getStoredLobbyCode());
+}
+
+//messages
+@Composable
+fun Message(message: String) {
+    Box(
+        modifier = Modifier
+            .wrapContentSize()
+            .clip(shape = RoundedCornerShape(30.dp))
+            .background(colorResource(R.color.appleblue))
+            .padding(15.dp)
+    ) {
+        Column {
+            Text(
+                text = message,
+                color = colorResource(R.color.white),
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+        }
+    }
+}
