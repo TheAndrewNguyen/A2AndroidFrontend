@@ -1,5 +1,6 @@
 package com.example.a2chatAndroid.UiScreens
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -14,11 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.a2chatAndroid.Navigation.NavigationManager
+import com.example.a2chatAndroid.Utils.JoinChat
+import kotlinx.coroutines.launch
 
 @Composable
 fun JoinScreen() {
@@ -45,11 +49,21 @@ fun BackButton() {
 
 @Composable
 fun OTPInput() {
+    val coroutineScope = rememberCoroutineScope()
+
     // State to hold the input for each of the 6 boxes
     val otpDigits = remember { mutableStateListOf("", "", "", "", "", "") }
 
     // Create a list of FocusRequesters for each text field
     val focusRequesters = remember { List(6) { FocusRequester() } }
+
+    val keyBoardController = LocalSoftwareKeyboardController.current
+
+    //reset OTP
+    fun resetOTP() {
+        otpDigits.indices.forEach { otpDigits[it] = "" }
+        focusRequesters[0].requestFocus()
+    }
 
     // Function to handle input change
     fun onInputChange(index: Int, newValue: String) {
@@ -92,7 +106,24 @@ fun OTPInput() {
             }
 
             Button(
-                onClick = { /*TODO: Join user into chat room and navigate to chat screen*/ }
+                onClick = {
+                    val otpCode = otpDigits.joinToString("")
+                    Log.d("JoinPage", "CurrentOTPCode on submit: ${otpCode}")
+
+                    coroutineScope.launch {
+                        if (otpCode.length == 6) {
+                            try {
+                                resetOTP()
+                                JoinChat(otpCode.toString())
+                            } catch(e: Error) {
+                                Log.w("JoinPage", "An error occured while trying to sign the user in: ${e}")
+                            }
+                            //handle errors
+                        } else {
+                            Log.w("JoinPage", "code length currently under 6")
+                        }
+                    }
+                }
             )
             {
                 Text("Submit")
