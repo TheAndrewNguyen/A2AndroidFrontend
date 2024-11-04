@@ -4,7 +4,6 @@ import android.util.Log
 import com.example.a2chatAndroid.Navigation.NavigationManager
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
-import com.example.a2chatAndroid.Network.Firebase.authSignInAnonymously
 import com.example.a2chatAndroid.Network.Firebase.authSignOut
 import com.example.a2chatAndroid.Network.Firebase.safeSignOutandSignInAnonymously
 import com.example.a2chatAndroid.Network.RetrofitApi.firestoreAddUserToLobby
@@ -16,7 +15,8 @@ import kotlinx.coroutines.coroutineScope
 
 //starting a chat
 suspend fun startChat() {
-    Log.d("Chat", "Start chat called")
+    Log.d("Chat", "Starting a chat...")
+
     try {
         //tasks need to finish before addding user to lobby
         coroutineScope {
@@ -26,10 +26,11 @@ suspend fun startChat() {
                     Log.d("Chat", "Creating Lobby...")
                     firestoreCreateLobby()
                         .onSuccess { code ->
+                            Log.d("Chat", "Lobby created with code: $code")
                             masterLobbyManager.onLobbyCreated(code)
                         }
                         .onFailure { error ->
-                            Log.w("Chat", "Error while creating lobby with error code ", error)
+                            Log.w("Chat", "Error while creating lobby with error: ", error)
                         }
                },
                 //signing in anonymously
@@ -37,7 +38,7 @@ suspend fun startChat() {
                     Log.d("Chat", "Signing in Anonymously...")
                     safeSignOutandSignInAnonymously()
                         .onSuccess { message ->
-                            Log.d("Chat", "User signed in with UID: ${message}")
+                            Log.d("Chat", "User signed in succesfully with UID: ${message}")
                         }
                         .onFailure {
                             Log.w("Chat", "Error while signing in with error code ", it)
@@ -47,28 +48,15 @@ suspend fun startChat() {
             deferredTasks.awaitAll()
         }
 
-
-        //log calls
-        Log.d("Chat", "User logged in after awaits: ${authGetCurrentUser()}")
-        Log.d("Chat", "lobby code after awaits: ${masterLobbyManager.getStoredLobbyCode()}")
-
-        //add user to lobby using the api call
-        Log.d("Chat", "FireStoreAddUserToLobby called with uid: ${authGetCurrentUser()}, and lobby code ${masterLobbyManager.getStoredLobbyCode()}")
-        firestoreAddUserToLobby(authGetCurrentUser().toString(),
-            masterLobbyManager.getStoredLobbyCode().toString()
-        )
-            .onSuccess { message ->
-                Log.d("Chat", "User added to lobby with message: $message")
-            }
-            .onFailure { error ->
-                throw Error("Error while adding user to lobby with error code: $error")
-                Log.w("Chat", "Error while adding user to lobby with error code: ", error)
-            }
-
+        //error handling
         if(authGetCurrentUser() == null || masterLobbyManager.getStoredLobbyCode() == null) {
             Log.w("Chat", "User or lobby code is null start chat failed")
             throw Error("User or lobby code is null")
         }
+
+        //add user to lobby using the api call
+        Log.d("Chat", "JoinChat called current uid: ${authGetCurrentUser()}, and lobby code ${masterLobbyManager.getStoredLobbyCode()}")
+        JoinChat(masterLobbyManager.getStoredLobbyCode().toString(), true)
 
         //navigate to chatScreen
         Log.d("Chat", "Navigation called")
@@ -83,19 +71,20 @@ suspend fun startChat() {
 }
 
 //function for when user joins a chat
-suspend fun JoinChat(lobbyCode: String) {
+suspend fun JoinChat(lobbyCode: String, calledFromCreateChatMethod: Boolean) {
 
-    val uid = authSignInAnonymously()
+    var uid = ""
 
-    if(uid == null) {
-        Log.w("Chat", "Could not join chat because UID is null")
-        throw Error("User is null")
+    if(!calledFromCreateChatMethod) {
+        safeSignOutandSignInAnonymously()
     }
+
+    uid = authGetCurrentUser().toString()
 
     firestoreAddUserToLobby(uid.toString(), lobbyCode)
         .onSuccess {
             Log.d("Chat", "User: ${uid} joined lobby: ${lobbyCode} succesfully")
-            masterLobbyManager.onLobbyCreated(lobbyCode)
+            if(!calledFromCreateChatMethod) masterLobbyManager.onLobbyCreated(lobbyCode)
         }
         .onFailure { error ->
             Log.w("Chat", "Failed to add user to lobby error: ${error}")
