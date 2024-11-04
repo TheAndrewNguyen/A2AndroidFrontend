@@ -21,7 +21,7 @@ suspend fun startChat() {
             val deferredTasks = listOf(
                 async(Dispatchers.IO) {
                     Log.d("Chat", "Creating Lobby...")
-                    val apiCallToFirestore = firestoreCreateLobby()
+                    firestoreCreateLobby()
                         .onSuccess { code ->
                             masterLobbyManager.onLobbyCreated(code)
                         }
@@ -38,7 +38,7 @@ suspend fun startChat() {
         }
 
 
-
+        //log calls
         Log.d("Chat", "User logged in after awaits: ${authGetCurrentUser()}")
         Log.d("Chat", "lobby code after awaits: ${masterLobbyManager.getStoredLobbyCode()}")
 
@@ -47,6 +47,12 @@ suspend fun startChat() {
         firestoreAddUserToLobby(authGetCurrentUser().toString(),
             masterLobbyManager.getStoredLobbyCode().toString()
         )
+            .onSuccess { message ->
+                Log.d("Chat", "User added to lobby with message: $message")
+            }
+            .onFailure { error ->
+                Log.w("Chat", "Error while adding user to lobby with error code: ", error)
+            }
 
         //TODO: add error handling if any of the above calls fail
         //navigate to chatScreen
