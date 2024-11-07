@@ -78,30 +78,3 @@ suspend fun safeSignOutandSignInAnonymously() : Result<String>{
     }
 }
 
-//removing user from auth and signing out the user
-fun authDeleteAndSignOut() {
-    val currentUser = Firebase.auth.currentUser
-
-    if (currentUser == null) {
-        Log.w("Auth", "No current user logged in")
-        return
-    }
-
-    val userID = Firebase.auth.currentUser?.uid
-
-    currentUser.delete()
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val updatedUser = auth.currentUser
-                if (updatedUser == null) {
-                    Log.d("Auth", "$userID deleted from database")
-                    auth.signOut()
-                    Log.d("Auth", "$userID signed out")
-                }
-            } else {
-                Log.w("Auth", "$userID deletion failed.")
-            }
-        }
-}
-
-

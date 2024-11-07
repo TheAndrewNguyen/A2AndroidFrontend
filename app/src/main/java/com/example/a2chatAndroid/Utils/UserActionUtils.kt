@@ -32,7 +32,7 @@ suspend fun startChat() {
                         .onFailure { error ->
                             Log.w("Chat", "Error while creating lobby with error: ", error)
                         }
-               },
+                },
                 //signing in anonymously
                 async(Dispatchers.IO) {
                     Log.d("Chat", "Signing in Anonymously...")
@@ -49,13 +49,16 @@ suspend fun startChat() {
         }
 
         //error handling
-        if(authGetCurrentUser() == null || masterLobbyManager.getStoredLobbyCode() == null) {
+        if (authGetCurrentUser() == null || masterLobbyManager.getStoredLobbyCode() == null) {
             Log.w("Chat", "User or lobby code is null start chat failed")
             throw Error("User or lobby code is null")
         }
 
         //add user to lobby using the api call
-        Log.d("Chat", "JoinChat called current uid: ${authGetCurrentUser()}, and lobby code ${masterLobbyManager.getStoredLobbyCode()}")
+        Log.d(
+            "Chat",
+            "JoinChat called current uid: ${authGetCurrentUser()}, and lobby code ${masterLobbyManager.getStoredLobbyCode()}"
+        )
         JoinChat(masterLobbyManager.getStoredLobbyCode().toString(), true)
 
         //navigate to chatScreen
@@ -65,7 +68,7 @@ suspend fun startChat() {
         //end of start chat functionality
         Log.d("Chat", "Start chat succesful")
 
-    } catch(e: Error) {
+    } catch (e: Error) {
         Log.w("Chat", "Start chat failed with exception: $e")
     }
 }
@@ -75,7 +78,7 @@ suspend fun JoinChat(lobbyCode: String, calledFromCreateChatMethod: Boolean) {
 
     var uid = ""
 
-    if(!calledFromCreateChatMethod) {
+    if (!calledFromCreateChatMethod) {
         safeSignOutandSignInAnonymously()
     }
 
@@ -84,7 +87,7 @@ suspend fun JoinChat(lobbyCode: String, calledFromCreateChatMethod: Boolean) {
     firestoreAddUserToLobby(uid.toString(), lobbyCode)
         .onSuccess {
             Log.d("Chat", "User: ${uid} joined lobby: ${lobbyCode} succesfully")
-            if(!calledFromCreateChatMethod) masterLobbyManager.onLobbyCreated(lobbyCode)
+            if (!calledFromCreateChatMethod) masterLobbyManager.onLobbyCreated(lobbyCode)
         }
         .onFailure { error ->
             Log.w("Chat", "Failed to add user to lobby error: ${error}")
@@ -95,8 +98,17 @@ suspend fun JoinChat(lobbyCode: String, calledFromCreateChatMethod: Boolean) {
 }
 
 suspend fun endChat() {
-    authSignOut()
-    //delete the lobby with an api call and remove users??? //TODO: ask alex about this
+    authSignOut() //sign out the user
+        .onSuccess {
+            Log.d("Chat", "User signed out succesfully")
+        }
+        .onFailure {
+            Log.w("Chat", "Error while signing out with error code ", it)
+            throw Error("Error while signing out")
+        }
+
+    //call an api call to remove the user from the lobby
+
     //navigate back to home screen
 }
 
