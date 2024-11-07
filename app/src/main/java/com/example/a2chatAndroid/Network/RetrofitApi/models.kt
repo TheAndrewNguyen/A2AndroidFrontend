@@ -14,4 +14,8 @@ data class OnLobbyJoinResponse(
     val message: String
 )
 
+data class authDeleteUserRequest(
+    val uid: String
+)
+
 
