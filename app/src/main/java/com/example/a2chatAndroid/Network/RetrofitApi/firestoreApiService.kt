@@ -1,8 +1,8 @@
 package com.example.a2chatAndroid.Network.RetrofitApi
 
 import android.util.Log
+import com.example.a2chatAndroid.Network.RetrofitApi.RetroFitClient.apiService
 
-val apiService = RetroFitClient.retrofit.create(BackEndApiService::class.java)
 
 //makes api request for /firestore/createLobby
 suspend fun firestoreCreateLobby(): Result<String> {
@@ -10,7 +10,7 @@ suspend fun firestoreCreateLobby(): Result<String> {
         Log.d("Retrofit", "Create Lobby called")
         val response = apiService.createLobby()
 
-        //repsonse was succesful
+        //response was successful
         if (response.isSuccessful) {
             val data = response.body()
             val lobbyCode = data?.code

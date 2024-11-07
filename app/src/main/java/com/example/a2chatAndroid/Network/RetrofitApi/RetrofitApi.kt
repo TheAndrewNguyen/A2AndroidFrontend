@@ -11,5 +11,7 @@ object RetroFitClient {
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())  //converts object into readable
         .build()
+
+    val apiService = RetroFitClient.retrofit.create(BackEndApiService::class.java)
 }
 

@@ -6,6 +6,7 @@ import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.Network.Firebase.authSignOut
 import com.example.a2chatAndroid.Network.Firebase.safeSignOutandSignInAnonymously
+import com.example.a2chatAndroid.Network.RetrofitApi.authDeleteUser
 import com.example.a2chatAndroid.Network.RetrofitApi.firestoreAddUserToLobby
 import com.example.a2chatAndroid.Network.RetrofitApi.firestoreCreateLobby
 import kotlinx.coroutines.Dispatchers
@@ -108,7 +109,7 @@ suspend fun endChat() {
         }
 
     //call an api call to remove the user from the lobby
-
+    authDeleteUser("ArGULWOQsSMVVNL6iyNmSTdYxHo1")
     //navigate back to home screen
 }
 

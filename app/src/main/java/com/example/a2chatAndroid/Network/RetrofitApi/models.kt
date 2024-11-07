@@ -18,4 +18,8 @@ data class authDeleteUserRequest(
     val uid: String
 )
 
+data class authDeleteUserResponse(
+    val message: String
+)
+
 
