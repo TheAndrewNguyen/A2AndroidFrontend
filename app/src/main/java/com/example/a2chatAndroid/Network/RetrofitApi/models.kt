@@ -6,8 +6,8 @@ data class OnLobbyCreateResponse (
 )
 
 data class OnLobbyJoinRequest(
-    val lobbyID: String,
-    val UID: String
+    val lobbyId: String,
+    val uid: String
 )
 
 data class OnLobbyJoinResponse(
