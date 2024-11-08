@@ -1,6 +1,7 @@
 package com.example.a2chatAndroid.UiScreens
 
 //import com.example.a2chatAndroid.Utils.endChat
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +37,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.R
+import com.example.a2chatAndroid.Utils.endChat
+import kotlinx.coroutines.launch
 
 
 //Main composable
@@ -88,15 +92,22 @@ fun EndButton(onClick: () -> Unit) {
 //pop up when user presses end button
 @Composable
 fun EndPopUp(showPopUp: MutableState<Boolean>) {
+    val coroutineScope = rememberCoroutineScope()
+
     AlertDialog(
         onDismissRequest = { showPopUp.value = false },
         title = { Text(text = "Confirm leave") },
         text = { Text(text = "Are you sure you want to end the chat?") },
         confirmButton = {
+
             Button(
                 onClick = {
-                    //endChat()
-                    showPopUp.value = false // Close the dialog
+                    try {
+                    coroutineScope.launch {
+                        endChat()
+                    }} catch (e: Error) {
+                        Log.w("EndPopUp", "An error occured while trying to end the chat: ${e}")
+                    }
                 }
             ) {
                 Text("Yes")
@@ -104,7 +115,7 @@ fun EndPopUp(showPopUp: MutableState<Boolean>) {
         },
         dismissButton = {
             Button(
-                onClick = { showPopUp.value = false } // Just close the dialog
+                onClick = { showPopUp.value = false } // Just close the dialog and continue the chat
             ) {
                 Text("No")
             }

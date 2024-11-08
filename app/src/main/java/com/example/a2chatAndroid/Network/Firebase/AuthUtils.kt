@@ -63,7 +63,6 @@ suspend fun authSignInAnonymously(): Result<String> = suspendCancellableCoroutin
 //signs in fresh user
 suspend fun safeSignOutandSignInAnonymously() : Result<String>{
     return try {
-
         Log.d("Auth", "Sign out called")
         authSignOut()
 

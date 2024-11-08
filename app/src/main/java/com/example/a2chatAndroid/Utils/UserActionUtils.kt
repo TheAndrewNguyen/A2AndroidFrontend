@@ -99,18 +99,33 @@ suspend fun JoinChat(lobbyCode: String, calledFromCreateChatMethod: Boolean) {
 }
 
 suspend fun endChat() {
-    authSignOut() //sign out the user
-        .onSuccess {
-            Log.d("Chat", "User signed out succesfully")
-        }
-        .onFailure {
-            Log.w("Chat", "Error while signing out with error code ", it)
-            throw Error("Error while signing out")
-        }
+    Log.d("Chat", "Ending chat...")
+    val uid = authGetCurrentUser()
 
-    //call an api call to remove the user from the lobby
-    authDeleteUser("ArGULWOQsSMVVNL6iyNmSTdYxHo1")
+    Log.d("Chat", "Signing out user...")
+    val signoutResult = authSignOut() //signing out user
+
+    signoutResult.onSuccess {
+        Log.d("Chat", "User $uid successfully signed out")
+    }.onFailure { error ->
+        Log.w("Chat", "Error while signing out user with error code: ", error)
+    }
+
+    Log.d("Chat", "Deleting user from auth directory...")
+    val deleteResult = authDeleteUser(uid.toString())
+
+    deleteResult.onSuccess {
+        Log.d("Chat", "User $uid successfully deleted")
+    }.onFailure { error ->
+        Log.w("Chat", "Error while deleting user with error code: ", error)
+    }
+
+    //call an api to remove the user from the lobby
+
+
     //navigate back to home screen
+    NavigationManager.navigateToHomeScreen()
+
 }
 
 //TODO: implmeent error handling
