@@ -9,6 +9,7 @@ import com.example.a2chatAndroid.Network.Firebase.safeSignOutandSignInAnonymousl
 import com.example.a2chatAndroid.Network.RetrofitApi.authDeleteUser
 import com.example.a2chatAndroid.Network.RetrofitApi.firestoreAddUserToLobby
 import com.example.a2chatAndroid.Network.RetrofitApi.firestoreCreateLobby
+import com.example.a2chatAndroid.Network.RetrofitApi.firestoreRemoveUserFromLobby
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -76,56 +77,74 @@ suspend fun startChat() {
 
 //function for when user joins a chat
 suspend fun JoinChat(lobbyCode: String, calledFromCreateChatMethod: Boolean) {
+    try {
+        var uid = ""
 
-    var uid = ""
+        if (!calledFromCreateChatMethod) {
+            safeSignOutandSignInAnonymously()
+        }
 
-    if (!calledFromCreateChatMethod) {
-        safeSignOutandSignInAnonymously()
+        uid = authGetCurrentUser().toString()
+
+        firestoreAddUserToLobby(uid.toString(), lobbyCode)
+            .onSuccess {
+                Log.d("Chat", "User: ${uid} joined lobby: ${lobbyCode} succesfully")
+                if (!calledFromCreateChatMethod) masterLobbyManager.onLobbyCreated(lobbyCode)
+            }
+            .onFailure { error ->
+                Log.w("Chat", "Failed to add user to lobby error: ${error}")
+                throw Error("Failed to add user to lobby")
+            }
+
+        NavigationManager.navigateToChatScreen()
+    } catch(error : Error) {
+        Log.w("Chat", "An error occured while trying to join the chat: ${error}")
     }
-
-    uid = authGetCurrentUser().toString()
-
-    firestoreAddUserToLobby(uid.toString(), lobbyCode)
-        .onSuccess {
-            Log.d("Chat", "User: ${uid} joined lobby: ${lobbyCode} succesfully")
-            if (!calledFromCreateChatMethod) masterLobbyManager.onLobbyCreated(lobbyCode)
-        }
-        .onFailure { error ->
-            Log.w("Chat", "Failed to add user to lobby error: ${error}")
-            throw Error("Failed to add user to lobby")
-        }
-
-    NavigationManager.navigateToChatScreen()
 }
 
 suspend fun endChat() {
-    Log.d("Chat", "Ending chat...")
-    val uid = authGetCurrentUser()
+    try {
+        Log.d("Chat", "Ending chat...")
+        val current_uid = authGetCurrentUser()
 
-    Log.d("Chat", "Signing out user...")
-    val signoutResult = authSignOut() //signing out user
+        //sign out user locally
+        Log.d("Chat", "Signing out user...")
+        val signoutResult = authSignOut() //signing out user
 
-    signoutResult.onSuccess {
-        Log.d("Chat", "User $uid successfully signed out")
-    }.onFailure { error ->
-        Log.w("Chat", "Error while signing out user with error code: ", error)
+        signoutResult.onSuccess {
+            Log.d("Chat", "User $current_uid successfully signed out")
+        }.onFailure { error ->
+            Log.w("Chat", "Error while signing out user with error code: ", error)
+        }
+
+        //call an api to delete user from auth directory
+        Log.d("Chat", "Deleting user from auth directory...")
+        val deleteResult = authDeleteUser(current_uid.toString())
+
+        deleteResult.onSuccess {
+            Log.d("Chat", "User $current_uid successfully deleted")
+        }.onFailure { error ->
+            Log.w("Chat", "Error while deleting user with error code: ", error)
+        }
+
+        //call an api to remove the user from the lobby
+        val removeUserFromLobbyResult = firestoreRemoveUserFromLobby(
+            masterLobbyManager.getStoredLobbyCode()
+                .toString(), current_uid.toString()
+        )
+
+        removeUserFromLobbyResult.onSuccess {
+            Log.d("Chat", "User $current_uid successfully removed from lobby")
+        }.onFailure { error ->
+            Log.w("Chat", "Error while removing user from lobby with error code: ", error)
+        }
+
+        //navigate back to home screen
+        Log.d("Chat", "Navigating back to home screen")
+        NavigationManager.navigateToHomeScreen()
+    } catch (error: Error) {
+        Log.w("Chat", "An error occured while trying to end the chat: ${error}")
     }
-
-    Log.d("Chat", "Deleting user from auth directory...")
-    val deleteResult = authDeleteUser(uid.toString())
-
-    deleteResult.onSuccess {
-        Log.d("Chat", "User $uid successfully deleted")
-    }.onFailure { error ->
-        Log.w("Chat", "Error while deleting user with error code: ", error)
-    }
-
-    //call an api to remove the user from the lobby
-
-
-    //navigate back to home screen
-    NavigationManager.navigateToHomeScreen()
-
 }
 
 //TODO: implmeent error handling
