@@ -21,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -140,21 +141,12 @@ fun MessageDisplay() {
                 .fillMaxWidth()
                 .weight(1f)
                 .padding(8.dp),
-            horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Message("Yolo3")
-            Message("Yolo1")
-            Message("ALEX GET THE DRUGS ")
-            Message("ALEX WHERE ARE THE DRUGS!!!")
-            Message("ALEX GIMMIE THE DRUGS!!!!!!1")
-            Message("ALEX GIMMIE THE DRUGS!!!!!!1")
-            Message("ALEX GIMMIE THE DRUGS!!!!!!1")
-            Message("ALEX GIMMIE THE DRUGS!!!!!!1")
-            Message("ALEX GIMMIE THE DRUGS!!!!!!1")
-            Message("ALEX GIMMIE THE DRUGS!!!!!!1")
-            Message("ALEX GIMMIE THE DRUGS!!!!!!1")
-            Message("ALEX GIMMIE THE DRUGS!!!!!!1")
+            for(i in 1..40) {
+                Message("Hello there", false)
+                Message("HI!!!", true)
+            }
         }
         MessageInput()
     }
@@ -209,20 +201,38 @@ fun JoinCode () {
 
 //messages
 @Composable
-fun Message(message: String) {
-    Box(
+fun Message(message: String, fromUser: Boolean) {
+    Row(
         modifier = Modifier
-            .wrapContentSize()
-            .clip(shape = RoundedCornerShape(30.dp))
-            .background(colorResource(R.color.appleblue))
-            .padding(15.dp)
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = if (fromUser) Arrangement.End else Arrangement.Start
     ) {
-        Column {
-            Text(
-                text = message,
-                color = colorResource(R.color.white),
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+                .clip(shape = RoundedCornerShape(30.dp))
+                .background(
+                    if(fromUser) colorResource(R.color.appleblue)
+                    else {
+                        colorResource(R.color.applegreen)
+                    }
+                )
+                .padding(15.dp)
+        ) {
+            Column {
+                Text( //user idenfier
+                    text = if(fromUser) "You" else "User",
+                    color = colorResource(R.color.black),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+                Text( //user text message
+                    text = message,
+                    color = colorResource(R.color.white),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
     }
 }

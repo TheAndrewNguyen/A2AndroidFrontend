@@ -97,7 +97,7 @@ suspend fun JoinChat(lobbyCode: String, calledFromCreateChatMethod: Boolean) {
             }
 
         NavigationManager.navigateToChatScreen()
-    } catch(error : Error) {
+    } catch (error: Error) {
         Log.w("Chat", "An error occured while trying to join the chat: ${error}")
     }
 }
@@ -160,7 +160,6 @@ suspend fun endChat() {
 
             Log.d("Chat", "All end chat tasks completed")
         }
-
 
 
         //navigate back to home screen
