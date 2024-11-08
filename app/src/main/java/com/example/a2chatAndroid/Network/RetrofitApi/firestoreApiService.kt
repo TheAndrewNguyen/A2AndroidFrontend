@@ -1,35 +1,10 @@
 package com.example.a2chatAndroid.Network.RetrofitApi
 
 import android.util.Log
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.a2chatAndroid.Network.RetrofitApi.RetroFitClient.apiService
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.coroutineContext
 
-val apiService = RetroFitClient.retrofit.create(BackEndApiService::class.java)
-
-//example
-fun fetchTestData() {
-    val apiService = RetroFitClient.retrofit.create(BackEndApiService::class.java)
-    apiService.test().enqueue(object : Callback<String> {  // Replace YourDataClass with the actual data class
-        override fun onResponse(call: Call<String>, response: Response<String>) {
-            if (response.isSuccessful) {
-                val data = response.body()
-                if (data != null) {
-                    Log.d("Retrofit", "Response: $data")
-                    // Handle the response data
-                } else {
-                    Log.w("Retrofit", "Response body is null")
-                }
-            } else {
-                Log.w("Retrofit", "Response not successful: ${response.errorBody()?.string()}")
-            }
-        }
-
-        override fun onFailure(call: Call<String>, t: Throwable) {
-            Log.w("Retrofit", "Request failed", t)
-        }
-    })
-}
 
 //makes api request for /firestore/createLobby
 suspend fun firestoreCreateLobby(): Result<String> {
@@ -37,7 +12,7 @@ suspend fun firestoreCreateLobby(): Result<String> {
         Log.d("Retrofit", "Create Lobby called")
         val response = apiService.createLobby()
 
-        //repsonse was succesful
+        //response was successful
         if (response.isSuccessful) {
             val data = response.body()
             val lobbyCode = data?.code
@@ -65,8 +40,8 @@ suspend fun firestoreAddUserToLobby(uid : String, lobbyCode : String, ) : Result
     Log.d("Retrofit, firestoreAddUserToLobby", "firestoreAddUserToLobby Called with lobbyCode: ${lobbyCode} and uid: ${uid}")
 
     return try {
-        val requestBody = OnLobbyJoinRequest(lobbyCode, uid)
-        val response = apiService.addUserToLobby(requestBody)
+        val request = OnLobbyJoinRequest(lobbyCode, uid)
+        val response = apiService.addUserToLobby(request)
         val data = response?.body()
 
         if (response.isSuccessful) {
@@ -85,5 +60,23 @@ suspend fun firestoreAddUserToLobby(uid : String, lobbyCode : String, ) : Result
     } catch(e : Exception) {
         Log.w("Retrofit", "Request failed at network level with exception:", e)
         Result.failure(Exception("Request failed at the network level" + e.message))
+    }
+}
+
+suspend fun firestoreRemoveUserFromLobby(lobbyCode: String, uid: String) : Result<String> = withContext(coroutineContext) {
+    Log.d("Retrofit", "firestorRemoveFromLobby api called, Attemping to remove user $uid from lobby $lobbyCode")
+
+    try {
+        val response = apiService.removeUsersFromLobby(lobbyCode, uid)
+
+        if(response.isSuccessful) {
+            Log.d("Retrofit", "User $uid removed from lobby $lobbyCode succesfully")
+            return@withContext Result.success("User $uid removed from lobby $lobbyCode succesfully")
+        } else {
+            return@withContext Result.failure(Exception("Error while removing user from lobby"))
+        }
+    } catch(e : Exception) {
+        Log.w("Retrofit", "Error while removing user from lobby with exception: ${e.message}")
+        return@withContext Result.failure(Exception("Error while removing user from lobby ${e.message}"))
     }
 }

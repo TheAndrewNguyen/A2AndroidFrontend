@@ -114,7 +114,7 @@ fun OTPInput() {
                         if (otpCode.length == 6) {
                             try {
                                 resetOTP()
-                                JoinChat(otpCode.toString())
+                                JoinChat(otpCode.toString(), false)
                             } catch(e: Error) {
                                 Log.w("JoinPage", "An error occured while trying to sign the user in: ${e}")
                             }

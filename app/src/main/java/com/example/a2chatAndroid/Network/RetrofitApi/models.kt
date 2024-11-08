@@ -6,11 +6,19 @@ data class OnLobbyCreateResponse (
 )
 
 data class OnLobbyJoinRequest(
-    val lobbyID: String,
-    val UID: String
+    val lobbyId: String,
+    val uid: String
 )
 
 data class OnLobbyJoinResponse(
+    val message: String
+)
+
+data class authDeleteUserRequest(
+    val uid: String
+)
+
+data class authDeleteUserResponse(
     val message: String
 )
 
