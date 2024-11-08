@@ -107,37 +107,61 @@ suspend fun endChat() {
         Log.d("Chat", "Ending chat...")
         val current_uid = authGetCurrentUser()
 
-        //sign out user locally
-        Log.d("Chat", "Signing out user...")
-        val signoutResult = authSignOut() //signing out user
 
-        signoutResult.onSuccess {
-            Log.d("Chat", "User $current_uid successfully signed out")
-        }.onFailure { error ->
-            Log.w("Chat", "Error while signing out user with error code: ", error)
+
+        coroutineScope {
+
+            //sign out user locally
+            val signOutTask = async {
+                Log.d("Chat", "Signing out user...")
+                val signOutResult = authSignOut() //signing out user
+                signOutResult.onSuccess {
+                    Log.d("Chat", "User $current_uid successfully signed out")
+                }.onFailure { error ->
+                    Log.w("Chat", "Error while signing out user with error code: ", error)
+                }
+
+                signOutResult
+            }
+
+            //call an api to delete user from auth directory
+            val deleteUserTask = async {
+                Log.d("Chat", "Deleting user from auth directory...")
+                val deleteResult = authDeleteUser(current_uid.toString())
+
+                deleteResult.onSuccess {
+                    Log.d("Chat", "User $current_uid successfully deleted")
+                }.onFailure { error ->
+                    Log.w("Chat", "Error while deleting user with error code: ", error)
+                }
+
+                deleteResult
+            }
+
+            //call an api to remove the user from the lobby
+            val removeUserFromLobbyTask = async {
+                val removeUserFromLobbyResult = firestoreRemoveUserFromLobby(
+                    masterLobbyManager.getStoredLobbyCode()
+                        .toString(), current_uid.toString()
+                )
+
+                removeUserFromLobbyResult.onSuccess {
+                    Log.d("Chat", "User $current_uid successfully removed from lobby")
+                }.onFailure { error ->
+                    Log.w("Chat", "Error while removing user from lobby with error code: ", error)
+                }
+                removeUserFromLobbyResult
+            }
+
+            //await for the asks to finish
+            signOutTask.await()
+            deleteUserTask.await()
+            removeUserFromLobbyTask.await()
+
+            Log.d("Chat", "All end chat tasks completed")
         }
 
-        //call an api to delete user from auth directory
-        Log.d("Chat", "Deleting user from auth directory...")
-        val deleteResult = authDeleteUser(current_uid.toString())
 
-        deleteResult.onSuccess {
-            Log.d("Chat", "User $current_uid successfully deleted")
-        }.onFailure { error ->
-            Log.w("Chat", "Error while deleting user with error code: ", error)
-        }
-
-        //call an api to remove the user from the lobby
-        val removeUserFromLobbyResult = firestoreRemoveUserFromLobby(
-            masterLobbyManager.getStoredLobbyCode()
-                .toString(), current_uid.toString()
-        )
-
-        removeUserFromLobbyResult.onSuccess {
-            Log.d("Chat", "User $current_uid successfully removed from lobby")
-        }.onFailure { error ->
-            Log.w("Chat", "Error while removing user from lobby with error code: ", error)
-        }
 
         //navigate back to home screen
         Log.d("Chat", "Navigating back to home screen")
