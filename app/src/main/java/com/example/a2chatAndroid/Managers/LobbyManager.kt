@@ -1,14 +1,13 @@
-package com.example.a2chatAndroid.Utils
+package com.example.a2chatAndroid.Managers
 
 import android.util.Log
-import com.example.a2chatAndroid.Navigation.NavigationManager
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.Network.Firebase.authSignOut
 import com.example.a2chatAndroid.Network.Firebase.safeSignOutandSignInAnonymously
-import com.example.a2chatAndroid.Network.RetrofitApi.batchEndChat
-import com.example.a2chatAndroid.Network.RetrofitApi.firestoreAddUserToLobby
-import com.example.a2chatAndroid.Network.RetrofitApi.firestoreCreateLobby
+import com.example.a2chatAndroid.Network.RetrofitApi.Service.batchEndChat
+import com.example.a2chatAndroid.Network.RetrofitApi.Service.firestoreAddUserToLobby
+import com.example.a2chatAndroid.Network.RetrofitApi.Service.firestoreCreateLobby
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -121,7 +120,10 @@ suspend fun endChat() {
 
             val deleteUserAndLobbyTask = async {
                 Log.d("Chat", "Deleting user and lobby...")
-                val deleteUserAndLobbyResult = batchEndChat(masterLobbyManager.getStoredLobbyCode().toString(), current_uid.toString())
+                val deleteUserAndLobbyResult = batchEndChat(
+                    masterLobbyManager.getStoredLobbyCode().toString(),
+                    current_uid.toString()
+                )
                 deleteUserAndLobbyResult.onSuccess {
                     Log.d("Chat", "User and lobby successfully deleted")
                 }.onFailure { error ->

@@ -38,7 +38,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.R
-import com.example.a2chatAndroid.Utils.endChat
+import com.example.a2chatAndroid.Managers.endChat
 import kotlinx.coroutines.launch
 
 

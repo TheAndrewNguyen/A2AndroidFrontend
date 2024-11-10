@@ -1,6 +1,7 @@
-package com.example.a2chatAndroid.Network.RetrofitApi
+package com.example.a2chatAndroid.Network.RetrofitApi.Service
 
 import android.util.Log
+import com.example.a2chatAndroid.Network.RetrofitApi.RetroFitClient
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
