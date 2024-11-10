@@ -6,10 +6,9 @@ import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.Network.Firebase.authSignOut
 import com.example.a2chatAndroid.Network.Firebase.safeSignOutandSignInAnonymously
-import com.example.a2chatAndroid.Network.RetrofitApi.authDeleteUser
+import com.example.a2chatAndroid.Network.RetrofitApi.batchEndChat
 import com.example.a2chatAndroid.Network.RetrofitApi.firestoreAddUserToLobby
 import com.example.a2chatAndroid.Network.RetrofitApi.firestoreCreateLobby
-import com.example.a2chatAndroid.Network.RetrofitApi.firestoreRemoveUserFromLobby
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -107,10 +106,7 @@ suspend fun endChat() {
         Log.d("Chat", "Ending chat...")
         val current_uid = authGetCurrentUser()
 
-
-
         coroutineScope {
-
             //sign out user locally
             val signOutTask = async {
                 Log.d("Chat", "Signing out user...")
@@ -120,43 +116,23 @@ suspend fun endChat() {
                 }.onFailure { error ->
                     Log.w("Chat", "Error while signing out user with error code: ", error)
                 }
-
                 signOutResult
             }
 
-            //call an api to delete user from auth directory
-            val deleteUserTask = async {
-                Log.d("Chat", "Deleting user from auth directory...")
-                val deleteResult = authDeleteUser(current_uid.toString())
-
-                deleteResult.onSuccess {
-                    Log.d("Chat", "User $current_uid successfully deleted")
+            val deleteUserAndLobbyTask = async {
+                Log.d("Chat", "Deleting user and lobby...")
+                val deleteUserAndLobbyResult = batchEndChat(masterLobbyManager.getStoredLobbyCode().toString(), current_uid.toString())
+                deleteUserAndLobbyResult.onSuccess {
+                    Log.d("Chat", "User and lobby successfully deleted")
                 }.onFailure { error ->
-                    Log.w("Chat", "Error while deleting user with error code: ", error)
+                    Log.w("Chat", "Error while deleting user and lobby with error code: ", error)
                 }
-
-                deleteResult
-            }
-
-            //call an api to remove the user from the lobby
-            val removeUserFromLobbyTask = async {
-                val removeUserFromLobbyResult = firestoreRemoveUserFromLobby(
-                    masterLobbyManager.getStoredLobbyCode()
-                        .toString(), current_uid.toString()
-                )
-
-                removeUserFromLobbyResult.onSuccess {
-                    Log.d("Chat", "User $current_uid successfully removed from lobby")
-                }.onFailure { error ->
-                    Log.w("Chat", "Error while removing user from lobby with error code: ", error)
-                }
-                removeUserFromLobbyResult
+                deleteUserAndLobbyResult
             }
 
             //await for the asks to finish
             signOutTask.await()
-            deleteUserTask.await()
-            removeUserFromLobbyTask.await()
+            deleteUserAndLobbyTask.await()
 
             Log.d("Chat", "All end chat tasks completed")
         }

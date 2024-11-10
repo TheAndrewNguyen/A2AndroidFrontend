@@ -14,12 +14,7 @@ data class OnLobbyJoinResponse(
     val message: String
 )
 
-data class authDeleteUserRequest(
-    val uid: String
-)
-
-data class authDeleteUserResponse(
+data class batchEndChatResponse(
     val message: String
 )
-
 

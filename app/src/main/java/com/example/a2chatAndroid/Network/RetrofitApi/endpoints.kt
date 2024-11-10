@@ -21,9 +21,6 @@ interface BackEndApiService {
     @PUT("/firestore/addUserToLobby")
     suspend fun addUserToLobby(@Body requestBody: OnLobbyJoinRequest): Response<OnLobbyJoinResponse>
 
-    @DELETE("/firestore/removeUsersFromLobby/{lobbyId}/{uid}")
-    suspend fun removeUsersFromLobby(@Path("lobbyId") lobbyId: String, @Path("uid") uid: String) : Response<authDeleteUserResponse>
-
-    @DELETE("/auth/deleteUser/{uid}")
-    suspend fun authDeleteUser(@Path("uid") uid: String) : Response<authDeleteUserResponse>
+    @DELETE("/batch/endChat/{lobbyId}/{uid}")
+    suspend fun batchEndChat(@Path("lobbyId") lobbyId: String, @Path("uid") uid: String) : Response<batchEndChatResponse>
 }

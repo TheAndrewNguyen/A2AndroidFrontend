@@ -2,8 +2,6 @@ package com.example.a2chatAndroid.Network.RetrofitApi
 
 import android.util.Log
 import com.example.a2chatAndroid.Network.RetrofitApi.RetroFitClient.apiService
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.coroutineContext
 
 
 //makes api request for /firestore/createLobby
@@ -60,23 +58,5 @@ suspend fun firestoreAddUserToLobby(uid : String, lobbyCode : String, ) : Result
     } catch(e : Exception) {
         Log.w("Retrofit", "Request failed at network level with exception:", e)
         Result.failure(Exception("Request failed at the network level" + e.message))
-    }
-}
-
-suspend fun firestoreRemoveUserFromLobby(lobbyCode: String, uid: String) : Result<String> = withContext(coroutineContext) {
-    Log.d("Retrofit", "firestorRemoveFromLobby api called, Attemping to remove user $uid from lobby $lobbyCode")
-
-    try {
-        val response = apiService.removeUsersFromLobby(lobbyCode, uid)
-
-        if(response.isSuccessful) {
-            Log.d("Retrofit", "User $uid removed from lobby $lobbyCode succesfully")
-            return@withContext Result.success("User $uid removed from lobby $lobbyCode succesfully")
-        } else {
-            return@withContext Result.failure(Exception("Error while removing user from lobby"))
-        }
-    } catch(e : Exception) {
-        Log.w("Retrofit", "Error while removing user from lobby with exception: ${e.message}")
-        return@withContext Result.failure(Exception("Error while removing user from lobby ${e.message}"))
     }
 }
