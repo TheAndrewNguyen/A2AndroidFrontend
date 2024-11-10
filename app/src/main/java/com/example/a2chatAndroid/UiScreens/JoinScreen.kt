@@ -20,8 +20,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.a2chatAndroid.Navigation.NavigationManager
-import com.example.a2chatAndroid.Utils.JoinChat
+import com.example.a2chatAndroid.Managers.NavigationManager
+import com.example.a2chatAndroid.Managers.JoinChat
 import kotlinx.coroutines.launch
 
 @Composable

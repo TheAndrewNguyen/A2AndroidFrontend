@@ -1,7 +1,6 @@
-package com.example.a2chatAndroid.Utils
+package com.example.a2chatAndroid.Managers
 
 import android.util.Log
-import com.example.a2chatAndroid.Navigation.NavigationManager
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.Network.Firebase.authSignOut
@@ -121,7 +120,10 @@ suspend fun endChat() {
 
             val deleteUserAndLobbyTask = async {
                 Log.d("Chat", "Deleting user and lobby...")
-                val deleteUserAndLobbyResult = batchEndChat(masterLobbyManager.getStoredLobbyCode().toString(), current_uid.toString())
+                val deleteUserAndLobbyResult = batchEndChat(
+                    masterLobbyManager.getStoredLobbyCode().toString(),
+                    current_uid.toString()
+                )
                 deleteUserAndLobbyResult.onSuccess {
                     Log.d("Chat", "User and lobby successfully deleted")
                 }.onFailure { error ->

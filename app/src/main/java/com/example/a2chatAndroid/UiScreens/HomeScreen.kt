@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.a2chatAndroid.Navigation.NavigationManager
+import com.example.a2chatAndroid.Managers.NavigationManager
 import com.example.a2chatAndroid.R
-import com.example.a2chatAndroid.Utils.startChat
+import com.example.a2chatAndroid.Managers.startChat
 import kotlinx.coroutines.launch
 
 @Composable
