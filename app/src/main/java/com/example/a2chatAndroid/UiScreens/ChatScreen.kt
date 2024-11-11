@@ -40,9 +40,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.Managers.endChat
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
+import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.Network.RetrofitApi.Service.sendMessage
 import com.example.a2chatAndroid.R
 import com.google.firebase.Firebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import kotlinx.coroutines.launch
 
@@ -53,14 +57,39 @@ fun ChatScreen() {
     val ListOfMessageData = remember { mutableStateListOf<messageData>() }
     val showPopup = remember { mutableStateOf(false) } // State to control popup visibility
 
+
+    val currentUser = authGetCurrentUser()
+
     //imports for database
     val realTimeDataBase = Firebase.database
     val lobbyId = masterLobbyManager.getStoredLobbyCode()
-    val lobbyRef = realTimeDataBase.getReference("messages/$lobbyId")
 
     //todo: implement realtime data updates
     LaunchedEffect(Unit) {
-        lobbyRef.setValue("Hello there")
+        val messageListener = object :ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val messages = mutableStateListOf<messageData>()
+
+                ListOfMessageData.clear()
+                snapshot.children.forEach {
+                    val uid = it.child("userId").value.toString()
+                    val fromUser = uid == currentUser
+                    val message = it.child("messageContent").value.toString()
+
+                    val toDataModel = messageData(message, fromUser)
+                    messages.add(toDataModel)
+                }
+
+                Log.d("ChatRoom", "Messages: $messages")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("ChatRoom", "Failed to read value")
+            }
+        }
+
+        val lobbyRef = realTimeDataBase.getReference("messages/$lobbyId")
+        lobbyRef.orderByChild("timestamp").addValueEventListener(messageListener) //sort in firebase when called
     }
 
 
