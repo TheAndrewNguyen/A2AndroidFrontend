@@ -25,7 +25,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -40,13 +42,28 @@ import com.example.a2chatAndroid.Managers.endChat
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.RetrofitApi.Service.sendMessage
 import com.example.a2chatAndroid.R
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import kotlinx.coroutines.launch
 
 
 //Main composable
 @Composable
 fun ChatScreen() {
+    val ListOfMessageData = remember { mutableStateListOf<messageData>() }
     val showPopup = remember { mutableStateOf(false) } // State to control popup visibility
+
+    //imports for database
+    val realTimeDataBase = Firebase.database
+    val lobbyId = masterLobbyManager.getStoredLobbyCode()
+    val lobbyRef = realTimeDataBase.getReference("messages/$lobbyId")
+
+    //todo: implement realtime data updates
+    LaunchedEffect(Unit) {
+        lobbyRef.setValue("Hello there")
+    }
+
+
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -144,10 +161,7 @@ fun MessageDisplay() {
                 .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            for(i in 1..40) {
-                Message("Hello there", false)
-                Message("HI!!!", true)
-            }
+            //TODO: where the messages go
         }
         MessageInput()
     }
@@ -206,21 +220,26 @@ fun JoinCode () {
     Text("Lobby code " + lobbyManager.getStoredLobbyCode());
 }
 
+data class messageData(
+    val message: String,
+    val fromUser: Boolean
+)
+
 //messages
 @Composable
-fun Message(message: String, fromUser: Boolean) {
+fun Message(messageData: messageData) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        horizontalArrangement = if (fromUser) Arrangement.End else Arrangement.Start
+        horizontalArrangement = if (messageData.fromUser) Arrangement.End else Arrangement.Start
     ) {
         Box(
             modifier = Modifier
                 .wrapContentSize()
                 .clip(shape = RoundedCornerShape(30.dp))
                 .background(
-                    if(fromUser) colorResource(R.color.appleblue)
+                    if(messageData.fromUser) colorResource(R.color.appleblue)
                     else {
                         colorResource(R.color.applegreen)
                     }
@@ -229,13 +248,13 @@ fun Message(message: String, fromUser: Boolean) {
         ) {
             Column {
                 Text( //user idenfier
-                    text = if(fromUser) "You" else "User",
+                    text = if(messageData.fromUser) "You" else "User",
                     color = colorResource(R.color.black),
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text( //user text message
-                    text = message,
+                    text = messageData.message,
                     color = colorResource(R.color.white),
                     style = MaterialTheme.typography.bodyLarge
                 )
