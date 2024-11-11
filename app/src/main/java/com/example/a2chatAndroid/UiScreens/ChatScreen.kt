@@ -36,9 +36,10 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
-import com.example.a2chatAndroid.R
 import com.example.a2chatAndroid.Managers.endChat
+import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
+import com.example.a2chatAndroid.Network.RetrofitApi.Service.sendMessage
+import com.example.a2chatAndroid.R
 import kotlinx.coroutines.launch
 
 
@@ -155,6 +156,7 @@ fun MessageDisplay() {
 //Message input area
 @Composable
 fun MessageInput() {
+    val coroutineScope = rememberCoroutineScope()
     val message = remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -182,7 +184,12 @@ fun MessageInput() {
         Spacer(modifier = Modifier.width(8.dp))
 
         Button(
-            onClick = { /*TODO SEND BUTTON */ },
+            onClick = {
+                coroutineScope.launch() {
+                    sendMessage(message.value)
+                    message.value = ""
+                }
+            },
             modifier = Modifier.weight(0.4f)
         ) {
             Text("Send")

@@ -21,6 +21,6 @@ interface BackEndApiService {
     suspend fun batchEndChat(@Path("lobbyId") lobbyId: String, @Path("uid") uid: String) : Response<batchEndChatResponse>
 
     //messaging endpoints
-    @POST("/messaging/{lobbyId}")
+    @POST("/messages/{lobbyId}")
     suspend fun sendMessage(@Path("lobbyId") lobbyId: String, @Body requestBody: sendMessageRequest) : Response<sendMessageResponse>
 }
