@@ -54,7 +54,7 @@ import kotlinx.coroutines.launch
 //Main composable
 @Composable
 fun ChatScreen() {
-    val ListOfMessageData = remember { mutableStateListOf<messageData>() }
+    val currentListOfMessages = remember { mutableStateListOf<messageData>() }
     val showPopup = remember { mutableStateOf(false) } // State to control popup visibility
 
 
@@ -68,19 +68,22 @@ fun ChatScreen() {
     LaunchedEffect(Unit) {
         val messageListener = object :ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val messages = mutableStateListOf<messageData>()
+                val snapshotMessageList = mutableStateListOf<messageData>()
 
-                ListOfMessageData.clear()
+                currentListOfMessages.clear()
                 snapshot.children.forEach {
                     val uid = it.child("userId").value.toString()
                     val fromUser = uid == currentUser
                     val message = it.child("messageContent").value.toString()
 
                     val toDataModel = messageData(message, fromUser)
-                    messages.add(toDataModel)
+                    snapshotMessageList.add(toDataModel)
                 }
 
-                Log.d("ChatRoom", "Messages: $messages")
+                //update the global list of messages
+                Log.d("ChatRoom", "Messages: $snapshotMessageList")
+                currentListOfMessages.clear()
+                currentListOfMessages.addAll(snapshotMessageList)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -99,7 +102,7 @@ fun ChatScreen() {
             .padding(16.dp)
     ) {
         TopStrip(showPopup)
-        MessageDisplay()
+        MessageDisplay(currentListOfMessages)
         if (showPopup.value == true) {
             EndPopUp(showPopup)
         }
@@ -174,9 +177,12 @@ fun EndPopUp(showPopUp: MutableState<Boolean>) {
 
 //Message box
 @Composable
-fun MessageDisplay() {
+fun MessageDisplay(messageList : MutableList<messageData>) {
     val scrollState = rememberScrollState()
 
+    LaunchedEffect(messageList.size) {
+        scrollState.animateScrollTo(scrollState.maxValue)
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -190,7 +196,9 @@ fun MessageDisplay() {
                 .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            //TODO: where the messages go
+            for(messageData in messageList) {
+             Message(messageData)
+            }
         }
         MessageInput()
     }
@@ -231,6 +239,7 @@ fun MessageInput() {
                 coroutineScope.launch() {
                     sendMessage(message.value)
                     message.value = ""
+                    keyboardController?.hide()
                 }
             },
             modifier = Modifier.weight(0.4f)
