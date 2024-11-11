@@ -7,7 +7,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
-
+//messaging imports
 interface BackEndApiService {
     //firestore endpoints
     @POST("/firestore/createLobby")
@@ -21,4 +21,6 @@ interface BackEndApiService {
     suspend fun batchEndChat(@Path("lobbyId") lobbyId: String, @Path("uid") uid: String) : Response<batchEndChatResponse>
 
     //messaging endpoints
+    @POST("/messages/{lobbyId}")
+    suspend fun sendMessage(@Path("lobbyId") lobbyId: String, @Body requestBody: sendMessageRequest) : Response<sendMessageResponse>
 }
