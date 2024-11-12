@@ -76,6 +76,8 @@ dependencies {
     // https://firebase.google.com/docs/android/setup#available-libraries
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("com.google.firebase:firebase-database")
 
     //coroutinues
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
