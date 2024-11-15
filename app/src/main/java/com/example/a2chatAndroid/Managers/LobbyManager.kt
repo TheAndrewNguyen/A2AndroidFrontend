@@ -91,7 +91,7 @@ suspend fun JoinChat(lobbyCode: String, calledFromCreateChatMethod: Boolean) {
         var uid = ""
 
         if (!calledFromCreateChatMethod) {
-            safeSignOutandSignInAnonymously()
+           authenticateAndAddtoken()
         }
 
         uid = authGetCurrentUser().toString()
@@ -118,18 +118,6 @@ suspend fun endChat() {
         val current_uid = authGetCurrentUser()
 
         coroutineScope {
-            //sign out user locally
-            val signOutTask = async {
-                Log.d("Chat", "Signing out user...")
-                val signOutResult = authSignOut() //signing out user
-                signOutResult.onSuccess {
-                    Log.d("Chat", "User $current_uid successfully signed out")
-                }.onFailure { error ->
-                    Log.w("Chat", "Error while signing out user with error code: ", error)
-                }
-                signOutResult
-            }
-
             val deleteUserAndLobbyTask = async {
                 Log.d("Chat", "Deleting user and lobby...")
                 val deleteUserAndLobbyResult = batchEndChat(
@@ -145,10 +133,24 @@ suspend fun endChat() {
             }
 
             //await for the asks to finish
-            signOutTask.await()
             deleteUserAndLobbyTask.await()
 
             Log.d("Chat", "All end chat tasks completed")
+        }
+
+        coroutineScope {
+            //sign out user locally
+            val signOutTask = async {
+                Log.d("Chat", "Signing out user...")
+                val signOutResult = authSignOut() //signing out user
+                signOutResult.onSuccess {
+                    Log.d("Chat", "User $current_uid successfully signed out")
+                }.onFailure { error ->
+                    Log.w("Chat", "Error while signing out user with error code: ", error)
+                }
+                signOutResult
+            }
+            signOutTask.await()
         }
 
 
