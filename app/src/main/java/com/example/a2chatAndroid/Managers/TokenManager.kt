@@ -1,6 +1,7 @@
 package com.example.a2chatAndroid.Managers
 
-class TokenManager {
+
+class TokenStorage {
     private var token: String? = null
 
     //getters and setters
@@ -12,3 +13,5 @@ class TokenManager {
         this.token = token
     }
 }
+
+val TokenManager = TokenStorage()

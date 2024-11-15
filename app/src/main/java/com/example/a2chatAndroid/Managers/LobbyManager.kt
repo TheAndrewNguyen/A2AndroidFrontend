@@ -14,11 +14,33 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
+
+suspend fun authenticateAndAddtoken() {
+
+    coroutineScope {
+        async(Dispatchers.IO) {
+            Log.d("Chat", "Signing in Anonymously...")
+            safeSignOutandSignInAnonymously()
+                .onSuccess { message ->
+                    Log.d("Chat", "User signed in succesfully with UID: ${message}")
+                    TokenManager.setToken(authGetIdToken().toString())
+                }
+                .onFailure {
+                    Log.w("Chat", "Error while signing in with error code ", it)
+                }
+        }
+    }
+}
+
+
 //starting a chat
 suspend fun startChat() {
     Log.d("Chat", "Starting a chat...")
 
     try {
+        Log.d("Chat", "Authenticating user...")
+        authenticateAndAddtoken()
+
         //tasks need to finish before addding user to lobby
         coroutineScope {
             //signing out
@@ -35,17 +57,6 @@ suspend fun startChat() {
                         }
                 },
                 //signing in anonymously
-                async(Dispatchers.IO) {
-                    Log.d("Chat", "Signing in Anonymously...")
-                    safeSignOutandSignInAnonymously()
-                        .onSuccess { message ->
-                            Log.d("Chat", "User signed in succesfully with UID: ${message}")
-                            Log.d("Chat", authGetIdToken().toString())
-                        }
-                        .onFailure {
-                            Log.w("Chat", "Error while signing in with error code ", it)
-                        }
-                }
             )
             deferredTasks.awaitAll()
         }
