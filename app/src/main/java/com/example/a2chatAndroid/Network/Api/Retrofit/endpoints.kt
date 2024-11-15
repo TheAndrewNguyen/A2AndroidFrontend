@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.Network.RetrofitApi
+package com.example.a2chatAndroid.Network.Api.Retrofit
 
 import retrofit2.Response
 import retrofit2.http.Body

@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.Managers.endChat
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
-import com.example.a2chatAndroid.Network.RetrofitApi.Service.sendMessage
+import com.example.a2chatAndroid.Network.Api.Retrofit.Service.sendMessage
 import com.example.a2chatAndroid.R
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot

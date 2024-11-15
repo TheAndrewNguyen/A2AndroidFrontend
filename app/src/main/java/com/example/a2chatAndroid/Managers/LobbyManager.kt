@@ -3,11 +3,12 @@ package com.example.a2chatAndroid.Managers
 import android.util.Log
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
+import com.example.a2chatAndroid.Network.Firebase.authGetIdToken
 import com.example.a2chatAndroid.Network.Firebase.authSignOut
 import com.example.a2chatAndroid.Network.Firebase.safeSignOutandSignInAnonymously
-import com.example.a2chatAndroid.Network.RetrofitApi.Service.batchEndChat
-import com.example.a2chatAndroid.Network.RetrofitApi.Service.firestoreAddUserToLobby
-import com.example.a2chatAndroid.Network.RetrofitApi.Service.firestoreCreateLobby
+import com.example.a2chatAndroid.Network.Api.Retrofit.Service.batchEndChat
+import com.example.a2chatAndroid.Network.Api.Retrofit.Service.firestoreAddUserToLobby
+import com.example.a2chatAndroid.Network.Api.Retrofit.Service.firestoreCreateLobby
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -39,6 +40,7 @@ suspend fun startChat() {
                     safeSignOutandSignInAnonymously()
                         .onSuccess { message ->
                             Log.d("Chat", "User signed in succesfully with UID: ${message}")
+                            Log.d("Chat", authGetIdToken().toString())
                         }
                         .onFailure {
                             Log.w("Chat", "Error while signing in with error code ", it)
@@ -67,7 +69,6 @@ suspend fun startChat() {
 
         //end of start chat functionality
         Log.d("Chat", "Start chat succesful")
-
     } catch (e: Error) {
         Log.w("Chat", "Start chat failed with exception: $e")
     }

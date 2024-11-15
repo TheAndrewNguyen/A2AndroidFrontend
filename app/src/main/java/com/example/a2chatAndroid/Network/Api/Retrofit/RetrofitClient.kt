@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.Network.RetrofitApi
+package com.example.a2chatAndroid.Network.Api.Retrofit
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -12,6 +12,6 @@ object RetroFitClient {
         .addConverterFactory(GsonConverterFactory.create())  //converts object into readable
         .build()
 
-    val apiService = RetroFitClient.retrofit.create(BackEndApiService::class.java)
+    val apiService = retrofit.create(BackEndApiService::class.java)
 }
 
