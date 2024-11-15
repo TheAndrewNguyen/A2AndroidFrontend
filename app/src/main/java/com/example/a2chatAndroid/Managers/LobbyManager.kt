@@ -1,14 +1,14 @@
 package com.example.a2chatAndroid.Managers
 
 import android.util.Log
+import com.example.a2chatAndroid.Network.Api.Retrofit.Service.batchEndChat
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.Network.Firebase.authGetIdToken
 import com.example.a2chatAndroid.Network.Firebase.authSignOut
 import com.example.a2chatAndroid.Network.Firebase.safeSignOutandSignInAnonymously
-import com.example.a2chatAndroid.Network.Api.Retrofit.Service.batchEndChat
-import com.example.a2chatAndroid.Network.Api.Retrofit.Service.firestoreAddUserToLobby
-import com.example.a2chatAndroid.Network.Api.Retrofit.Service.firestoreCreateLobby
+import com.example.a2chatAndroid.Network.RetrofitApi.Service.firestoreAddUserToLobby
+import com.example.a2chatAndroid.Network.RetrofitApi.Service.firestoreCreateLobby
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
