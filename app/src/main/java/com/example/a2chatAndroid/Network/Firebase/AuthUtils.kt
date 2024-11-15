@@ -7,6 +7,7 @@ import com.google.firebase.auth.auth
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 //auth instance
 private lateinit var auth: FirebaseAuth
@@ -17,9 +18,9 @@ fun authGetCurrentUser(): String? {
 }
 
 //sign out /end connection
-suspend fun authSignOut(): Result<String> = suspendCancellableCoroutine { cont->
+suspend fun authSignOut(): Result<String> = suspendCancellableCoroutine { cont ->
     auth = Firebase.auth
-    if(auth.currentUser != null) {
+    if (auth.currentUser != null) {
         try {
             auth.signOut()
             Log.d("Auth", "User signed out successfully")
@@ -37,7 +38,7 @@ suspend fun authSignOut(): Result<String> = suspendCancellableCoroutine { cont->
 }
 
 //sign in anonymously and return user string
-suspend fun authSignInAnonymously(): Result<String> = suspendCancellableCoroutine { cont->
+suspend fun authSignInAnonymously(): Result<String> = suspendCancellableCoroutine { cont ->
     auth = Firebase.auth
 
     try {
@@ -53,7 +54,7 @@ suspend fun authSignInAnonymously(): Result<String> = suspendCancellableCoroutin
                     cont.resumeWithException(task.getException()!!)
                 }
             }
-    } catch(e : Exception) {
+    } catch (e: Exception) {
         Log.w("Auth", "There was a sign in error", e)
         cont.resumeWithException(e)
     }
@@ -61,7 +62,7 @@ suspend fun authSignInAnonymously(): Result<String> = suspendCancellableCoroutin
 
 //signout and then sign in just in case the user was previously not signed out
 //signs in fresh user
-suspend fun safeSignOutandSignInAnonymously() : Result<String>{
+suspend fun safeSignOutandSignInAnonymously(): Result<String> {
     return try {
         Log.d("Auth", "Sign out called")
         authSignOut()
@@ -71,9 +72,28 @@ suspend fun safeSignOutandSignInAnonymously() : Result<String>{
         Log.d("Auth", "Sign in called")
 
         Result.success("Sign out and sign in successful with UID: ${authGetCurrentUser()}")
-    } catch(e: Error) {
+    } catch (e: Error) {
         Log.w("Auth", "Sign out and sign in failed", e)
         Result.failure(Exception("Sign out and sign in failed: ${e}"))
     }
 }
 
+suspend fun authGetIdToken(): String? = suspendCoroutine { cont ->
+    val mUser = FirebaseAuth.getInstance().currentUser
+
+    if (mUser == null) {
+        cont.resumeWithException(IllegalStateException("User is not logged in"))
+        return@suspendCoroutine
+    }
+
+    mUser.getIdToken(true)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val idToken = task.result?.token
+                Log.d("Auth", "ID Token: $idToken")
+                cont.resume(idToken) //return the id token
+            } else {
+                cont.resumeWithException(task.exception ?: Exception("Unknown error"))
+            }
+        }
+}

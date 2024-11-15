@@ -1,11 +1,12 @@
 package com.example.a2chatAndroid.Managers
 
 import android.util.Log
+import com.example.a2chatAndroid.Network.Api.Retrofit.Service.batchEndChat
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
+import com.example.a2chatAndroid.Network.Firebase.authGetIdToken
 import com.example.a2chatAndroid.Network.Firebase.authSignOut
 import com.example.a2chatAndroid.Network.Firebase.safeSignOutandSignInAnonymously
-import com.example.a2chatAndroid.Network.RetrofitApi.Service.batchEndChat
 import com.example.a2chatAndroid.Network.RetrofitApi.Service.firestoreAddUserToLobby
 import com.example.a2chatAndroid.Network.RetrofitApi.Service.firestoreCreateLobby
 import kotlinx.coroutines.Dispatchers
@@ -13,11 +14,33 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
+
+suspend fun authenticateAndAddtoken() {
+
+    coroutineScope {
+        async(Dispatchers.IO) {
+            Log.d("Chat", "Signing in Anonymously...")
+            safeSignOutandSignInAnonymously()
+                .onSuccess { message ->
+                    Log.d("Chat", "User signed in succesfully with UID: ${message}")
+                    TokenManager.setToken(authGetIdToken().toString())
+                }
+                .onFailure {
+                    Log.w("Chat", "Error while signing in with error code ", it)
+                }
+        }
+    }
+}
+
+
 //starting a chat
 suspend fun startChat() {
     Log.d("Chat", "Starting a chat...")
 
     try {
+        Log.d("Chat", "Authenticating user...")
+        authenticateAndAddtoken()
+
         //tasks need to finish before addding user to lobby
         coroutineScope {
             //signing out
@@ -34,16 +57,6 @@ suspend fun startChat() {
                         }
                 },
                 //signing in anonymously
-                async(Dispatchers.IO) {
-                    Log.d("Chat", "Signing in Anonymously...")
-                    safeSignOutandSignInAnonymously()
-                        .onSuccess { message ->
-                            Log.d("Chat", "User signed in succesfully with UID: ${message}")
-                        }
-                        .onFailure {
-                            Log.w("Chat", "Error while signing in with error code ", it)
-                        }
-                }
             )
             deferredTasks.awaitAll()
         }
@@ -67,7 +80,6 @@ suspend fun startChat() {
 
         //end of start chat functionality
         Log.d("Chat", "Start chat succesful")
-
     } catch (e: Error) {
         Log.w("Chat", "Start chat failed with exception: $e")
     }
@@ -79,7 +91,7 @@ suspend fun JoinChat(lobbyCode: String, calledFromCreateChatMethod: Boolean) {
         var uid = ""
 
         if (!calledFromCreateChatMethod) {
-            safeSignOutandSignInAnonymously()
+           authenticateAndAddtoken()
         }
 
         uid = authGetCurrentUser().toString()
@@ -106,18 +118,6 @@ suspend fun endChat() {
         val current_uid = authGetCurrentUser()
 
         coroutineScope {
-            //sign out user locally
-            val signOutTask = async {
-                Log.d("Chat", "Signing out user...")
-                val signOutResult = authSignOut() //signing out user
-                signOutResult.onSuccess {
-                    Log.d("Chat", "User $current_uid successfully signed out")
-                }.onFailure { error ->
-                    Log.w("Chat", "Error while signing out user with error code: ", error)
-                }
-                signOutResult
-            }
-
             val deleteUserAndLobbyTask = async {
                 Log.d("Chat", "Deleting user and lobby...")
                 val deleteUserAndLobbyResult = batchEndChat(
@@ -133,10 +133,24 @@ suspend fun endChat() {
             }
 
             //await for the asks to finish
-            signOutTask.await()
             deleteUserAndLobbyTask.await()
 
             Log.d("Chat", "All end chat tasks completed")
+        }
+
+        coroutineScope {
+            //sign out user locally
+            val signOutTask = async {
+                Log.d("Chat", "Signing out user...")
+                val signOutResult = authSignOut() //signing out user
+                signOutResult.onSuccess {
+                    Log.d("Chat", "User $current_uid successfully signed out")
+                }.onFailure { error ->
+                    Log.w("Chat", "Error while signing out user with error code: ", error)
+                }
+                signOutResult
+            }
+            signOutTask.await()
         }
 
 
