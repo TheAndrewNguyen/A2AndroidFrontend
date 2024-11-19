@@ -11,9 +11,11 @@ class JoinScreenViewModel : ViewModel() {
         NavigationManager.navigateToHomeScreen()
     }
 
-    fun joinChat(lobbyCode: String, calledFromCreateChatMethod: Boolean) {
+    fun joinChat(lobbyCode: String, length : Int) {
         viewModelScope.launch {
-            LobbyViewModel.joinChat(lobbyCode, false)
+            if(length != 6) {
+                LobbyViewModel.joinChat(lobbyCode, false)
+            }
         }
     }
 }

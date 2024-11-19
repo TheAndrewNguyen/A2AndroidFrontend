@@ -21,7 +21,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.a2chatAndroid.ui.viewModels.JoinScreenViewModel
-import com.example.a2chatAndroid.ui.viewModels.NavigationManager
 
 @Composable
 fun JoinScreen() {
@@ -33,15 +32,15 @@ fun JoinScreen() {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
-        BackButton()
+        BackButton(viewModel)
         OTPInput(viewModel)
     }
 }
 
 @Composable
-fun BackButton() {
+fun BackButton(viewModel: JoinScreenViewModel) {
     IconButton(onClick = {
-        NavigationManager.navigateToHomeScreen() // Navigate back to the home screen
+        viewModel.navigateHome() // Navigate back to the home screen
     }, modifier = Modifier.offset(y = 16.dp)) {
         Icon(
             imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
@@ -110,19 +109,9 @@ fun OTPInput(viewModel: JoinScreenViewModel) {
                 onClick = {
                     val otpCode = otpDigits.joinToString("")
                     Log.d("JoinPage", "CurrentOTPCode on submit: ${otpCode}")
-                    if (otpCode.length == 6) {
-                        try {
-                            resetOTP()
-                            viewModel.joinChat(otpCode.toString(), false)
-                        } catch (e: Error) {
-                            Log.w(
-                                "JoinPage",
-                                "An error occured while trying to sign the user in: ${e}"
-                            )
-                        }
-                    } else {
-                        Log.w("JoinPage", "code length currently under 6")
-                    }
+
+                    //join chat function
+                    viewModel.joinChat(otpCode.toString(), otpCode.length)
                 }
             )
             {
