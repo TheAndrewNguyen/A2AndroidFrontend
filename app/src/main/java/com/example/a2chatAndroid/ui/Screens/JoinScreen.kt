@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.UiScreens
+package com.example.a2chatAndroid.ui.Screens
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke

@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.UiScreens
+package com.example.a2chatAndroid.ui.Screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,8 +17,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.Managers.NavigationManager
-import com.example.a2chatAndroid.R
 import com.example.a2chatAndroid.Managers.startChat
+import com.example.a2chatAndroid.R
 import kotlinx.coroutines.launch
 
 @Composable

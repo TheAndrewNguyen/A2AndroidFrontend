@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.UiScreens
+package com.example.a2chatAndroid.ui.Screens
 
 //import com.example.a2chatAndroid.Utils.endChat
 import android.util.Log
