@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.Managers
+package com.example.a2chatAndroid.Data.Repository
 
 
 class TokenStorage {

@@ -40,7 +40,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.Managers.endChat
 import com.example.a2chatAndroid.Data.Api.Service.sendMessage
-import com.example.a2chatAndroid.Data.CallBacks.masterLobbyManager
+import com.example.a2chatAndroid.Data.Repository.masterLobbyManager
 import com.example.a2chatAndroid.Data.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.R
 import com.google.firebase.Firebase

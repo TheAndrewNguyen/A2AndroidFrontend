@@ -1,6 +1,6 @@
 package com.example.a2chatAndroid.Data.Api.Retrofit
 
-import com.example.a2chatAndroid.Managers.TokenManager
+import com.example.a2chatAndroid.Data.Repository.TokenManager
 import com.example.a2chatAndroid.Data.Api.BackEndApiService
 import com.example.a2chatAndroid.Data.Api.okhttp.AuthInterceptor
 import okhttp3.OkHttpClient
