@@ -112,6 +112,7 @@ fun OTPInput(viewModel: JoinScreenViewModel) {
 
                     //join chat function
                     viewModel.joinChat(otpCode.toString(), otpCode.length)
+                    keyBoardController?.hide()
                 }
             )
             {
