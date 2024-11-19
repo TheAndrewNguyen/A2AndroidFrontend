@@ -20,12 +20,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.a2chatAndroid.Managers.NavigationManager
-import com.example.a2chatAndroid.Managers.JoinChat
-import kotlinx.coroutines.launch
+import com.example.a2chatAndroid.ui.viewModels.JoinScreenViewModel
+import com.example.a2chatAndroid.ui.viewModels.NavigationManager
 
 @Composable
 fun JoinScreen() {
+    val viewModel = JoinScreenViewModel()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -34,7 +34,7 @@ fun JoinScreen() {
         horizontalAlignment = Alignment.Start
     ) {
         BackButton()
-        OTPInput()
+        OTPInput(viewModel)
     }
 }
 
@@ -43,14 +43,15 @@ fun BackButton() {
     IconButton(onClick = {
         NavigationManager.navigateToHomeScreen() // Navigate back to the home screen
     }, modifier = Modifier.offset(y = 16.dp)) {
-        Icon(imageVector = Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back to Home")
+        Icon(
+            imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+            contentDescription = "Back to Home"
+        )
     }
 }
 
 @Composable
-fun OTPInput() {
-    val coroutineScope = rememberCoroutineScope()
-
+fun OTPInput(viewModel: JoinScreenViewModel) {
     // State to hold the input for each of the 6 boxes
     val otpDigits = remember { mutableStateListOf("", "", "", "", "", "") }
 
@@ -109,19 +110,18 @@ fun OTPInput() {
                 onClick = {
                     val otpCode = otpDigits.joinToString("")
                     Log.d("JoinPage", "CurrentOTPCode on submit: ${otpCode}")
-
-                    coroutineScope.launch {
-                        if (otpCode.length == 6) {
-                            try {
-                                resetOTP()
-                                JoinChat(otpCode.toString(), false)
-                            } catch(e: Error) {
-                                Log.w("JoinPage", "An error occured while trying to sign the user in: ${e}")
-                            }
-                            //handle errors
-                        } else {
-                            Log.w("JoinPage", "code length currently under 6")
+                    if (otpCode.length == 6) {
+                        try {
+                            resetOTP()
+                            viewModel.joinChat(otpCode.toString(), false)
+                        } catch (e: Error) {
+                            Log.w(
+                                "JoinPage",
+                                "An error occured while trying to sign the user in: ${e}"
+                            )
                         }
+                    } else {
+                        Log.w("JoinPage", "code length currently under 6")
                     }
                 }
             )

@@ -10,19 +10,19 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.a2chatAndroid.Managers.NavigationManager
-import com.example.a2chatAndroid.Managers.startChat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a2chatAndroid.R
-import kotlinx.coroutines.launch
+import com.example.a2chatAndroid.ui.viewModels.HomeScreenViewModel
 
 @Composable
 fun HomeScreen() {
+    val viewModel = viewModel<HomeScreenViewModel>()
+
     // State to track sign-in status
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -35,16 +35,16 @@ fun HomeScreen() {
         )
 
         // Join and Create buttons
-        HomeScreenJoinButton()
-        HomeScreenCreateButton()
+        HomeScreenJoinButton(viewModel)
+        HomeScreenCreateButton(viewModel)
     }
 }
 
 
 @Composable
-fun HomeScreenJoinButton() {
+fun HomeScreenJoinButton(viewModel: HomeScreenViewModel) {
     Button(
-        onClick = { NavigationManager.navigateToJoinScreen() },
+        onClick = { viewModel.navigateToJoinScreen() },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.applegreen),
             contentColor = colorResource(id = R.color.white)
@@ -58,14 +58,10 @@ fun HomeScreenJoinButton() {
 
 
 @Composable
-fun HomeScreenCreateButton() {
-    val coroutineScope = rememberCoroutineScope()
-
+fun HomeScreenCreateButton(viewModel: HomeScreenViewModel) {
     Button(
         onClick = {
-            coroutineScope.launch {
-                startChat()
-            }
+            viewModel.startChat()
         },
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.appleblue),

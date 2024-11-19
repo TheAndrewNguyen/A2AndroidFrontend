@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.Managers
+package com.example.a2chatAndroid.ui.viewModels
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController

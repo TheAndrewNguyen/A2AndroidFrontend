@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import com.example.a2chatAndroid.Data.Remote.Api.Service.sendMessage
 import com.example.a2chatAndroid.Data.Remote.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.Data.Repository.masterLobbyManager
-import com.example.a2chatAndroid.Managers.endChat
 import com.example.a2chatAndroid.R
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
@@ -57,14 +56,12 @@ fun ChatScreen() {
     val currentListOfMessages = remember { mutableStateListOf<messageData>() }
     val showPopup = remember { mutableStateOf(false) } // State to control popup visibility
 
-
     val currentUser = authGetCurrentUser()
 
     //imports for database
     val realTimeDataBase = Firebase.database
     val lobbyId = masterLobbyManager.getStoredLobbyCode()
 
-    //todo: implement realtime data updates
     LaunchedEffect(Unit) {
         val messageListener = object :ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -143,7 +140,6 @@ fun EndButton(onClick: () -> Unit) {
 //pop up when user presses end button
 @Composable
 fun EndPopUp(showPopUp: MutableState<Boolean>) {
-    val coroutineScope = rememberCoroutineScope()
 
     AlertDialog(
         onDismissRequest = { showPopUp.value = false },
@@ -152,13 +148,7 @@ fun EndPopUp(showPopUp: MutableState<Boolean>) {
         confirmButton = {
 
             Button(
-                onClick = {
-                    try {
-                    coroutineScope.launch {
-                        endChat()
-                    }} catch (e: Error) {
-                        Log.w("EndPopUp", "An error occured while trying to end the chat: ${e}")
-                    }
+                onClick = { //TODO: implement end chat
                 }
             ) {
                 Text("Yes")
