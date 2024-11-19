@@ -1,5 +1,11 @@
-package com.example.a2chatAndroid.Network.Api.Retrofit
+package com.example.a2chatAndroid.Network.Api
 
+import com.example.a2chatAndroid.Network.Api.Retrofit.OnLobbyCreateResponse
+import com.example.a2chatAndroid.Network.Api.Retrofit.OnLobbyJoinRequest
+import com.example.a2chatAndroid.Network.Api.Retrofit.OnLobbyJoinResponse
+import com.example.a2chatAndroid.Network.Api.Retrofit.batchEndChatResponse
+import com.example.a2chatAndroid.Network.Api.Retrofit.sendMessageRequest
+import com.example.a2chatAndroid.Network.Api.Retrofit.sendMessageResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

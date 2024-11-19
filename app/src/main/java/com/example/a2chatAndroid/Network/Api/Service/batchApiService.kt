@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.Network.Api.Retrofit.Service
+package com.example.a2chatAndroid.Network.Api.Service
 
 import android.util.Log
 import com.example.a2chatAndroid.Network.Api.Retrofit.RetroFitClient

@@ -1,7 +1,7 @@
 package com.example.a2chatAndroid.Managers
 
 import android.util.Log
-import com.example.a2chatAndroid.Network.Api.Retrofit.Service.batchEndChat
+import com.example.a2chatAndroid.Network.Api.Service.batchEndChat
 import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
 import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.Network.Firebase.authGetIdToken

@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.Network.Api.Retrofit.Service
+package com.example.a2chatAndroid.Network.Api.Service
 
 import android.util.Log
 import com.example.a2chatAndroid.Network.Api.Retrofit.RetroFitClient
@@ -11,7 +11,10 @@ import kotlin.coroutines.coroutineContext
 suspend fun sendMessage(messageContent: String) : Result<String> = withContext(coroutineContext) {
     Log.d("Retrofit", "sendMessage called with lobbyId: ${masterLobbyManager.getStoredLobbyCode()} and messageContent: $messageContent")
     try {
-        val response = RetroFitClient.apiService.sendMessage(masterLobbyManager.getStoredLobbyCode().toString(), sendMessageRequest(authGetCurrentUser()!!, messageContent))
+        val response = RetroFitClient.apiService.sendMessage(
+            masterLobbyManager.getStoredLobbyCode().toString(),
+            sendMessageRequest(authGetCurrentUser()!!, messageContent)
+        )
         if(response.isSuccessful) {
             return@withContext Result.success("Message sent successfully")
         } else {
