@@ -38,16 +38,15 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.example.a2chatAndroid.Data.Remote.Api.Service.sendMessage
 import com.example.a2chatAndroid.Data.Remote.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.Data.Repository.masterLobbyManager
 import com.example.a2chatAndroid.R
+import com.example.a2chatAndroid.ui.viewModels.ChatScreenViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
-import kotlinx.coroutines.launch
 
 
 //Main composable
@@ -57,6 +56,8 @@ fun ChatScreen() {
     val showPopup = remember { mutableStateOf(false) } // State to control popup visibility
 
     val currentUser = authGetCurrentUser()
+
+    val viewModel = ChatScreenViewModel()
 
     //imports for database
     val realTimeDataBase = Firebase.database
@@ -99,9 +100,9 @@ fun ChatScreen() {
             .padding(16.dp)
     ) {
         TopStrip(showPopup)
-        MessageDisplay(currentListOfMessages)
+        MessageDisplay(currentListOfMessages, viewModel)
         if (showPopup.value == true) {
-            EndPopUp(showPopup)
+            EndPopUp(showPopup, viewModel)
         }
     }
 }
@@ -139,7 +140,7 @@ fun EndButton(onClick: () -> Unit) {
 
 //pop up when user presses end button
 @Composable
-fun EndPopUp(showPopUp: MutableState<Boolean>) {
+fun EndPopUp(showPopUp: MutableState<Boolean>, viewModel: ChatScreenViewModel) {
 
     AlertDialog(
         onDismissRequest = { showPopUp.value = false },
@@ -148,7 +149,8 @@ fun EndPopUp(showPopUp: MutableState<Boolean>) {
         confirmButton = {
 
             Button(
-                onClick = { //TODO: implement end chat
+                onClick = {
+                    viewModel.endChat()
                 }
             ) {
                 Text("Yes")
@@ -167,7 +169,7 @@ fun EndPopUp(showPopUp: MutableState<Boolean>) {
 
 //Message box
 @Composable
-fun MessageDisplay(messageList : MutableList<messageData>) {
+fun MessageDisplay(messageList: MutableList<messageData>, viewModel: ChatScreenViewModel) {
     val scrollState = rememberScrollState()
 
     LaunchedEffect(messageList.size) {
@@ -190,13 +192,13 @@ fun MessageDisplay(messageList : MutableList<messageData>) {
              Message(messageData)
             }
         }
-        MessageInput()
+        MessageInput(viewModel)
     }
 }
 
 //Message input area
 @Composable
-fun MessageInput() {
+fun MessageInput(viewModel: ChatScreenViewModel) {
     val coroutineScope = rememberCoroutineScope()
     val message = remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -226,12 +228,8 @@ fun MessageInput() {
 
         Button(
             onClick = {
-                coroutineScope.launch() {
-                    if(message.value.isEmpty()) return@launch
-                    sendMessage(message.value)
-                    message.value = ""
-                    keyboardController?.hide()
-                }
+                viewModel.sendMessage(message.value)
+                message.value = "" //clear the message after sending
             },
             modifier = Modifier.weight(0.4f)
         ) {
