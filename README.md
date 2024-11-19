@@ -1,5 +1,12 @@
 # A2chatAndroid app 
-[![Kotlin](https://img.shields.io/badge/language-Kotlin-blue)](https://kotlinlang.org/) [![Jetpack Compose](https://img.shields.io/badge/UI-Jetpack_Compose-green)](https://developer.android.com/jetpack/compose) [![Firebase](https://img.shields.io/badge/backend-Firebase-orange)](https://firebase.google.com/) [![Database](https://img.shields.io/badge/database-Firebase_Realtime-green)](https://firebase.google.com/products/realtime-database) [![Authentication](https://img.shields.io/badge/authentication-Firebase-blue)](https://firebase.google.com/products/auth) 
+[![Kotlin](https://img.shields.io/badge/language-Kotlin-blue)](https://kotlinlang.org/)
+[![Jetpack Compose](https://img.shields.io/badge/UI-Jetpack_Compose-green)](https://developer.android.com/jetpack/compose)
+[![Firebase](https://img.shields.io/badge/backend-Firebase-orange)](https://firebase.google.com/)
+[![Database](https://img.shields.io/badge/database-Firebase_Realtime-green)](https://firebase.google.com/products/realtime-database)
+[![Authentication](https://img.shields.io/badge/authentication-Firebase-blue)](https://firebase.google.com/products/auth)
+[![Retrofit](https://img.shields.io/badge/Retrofit-2.9.0-blue?logo=android)](https://square.github.io/retrofit/)
+[![OkHttp](https://img.shields.io/badge/OkHttp-4.11.0-green?logo=java)](https://square.github.io/okhttp/)
+
 
 A2chat is a secure and user-friendly platfrom for anonymous communication.  It enables users to join private lobbies using unique codes. 
 
@@ -16,7 +23,7 @@ A2chat is a secure and user-friendly platfrom for anonymous communication.  It e
 
 ## Roadmap
 - [x] MVP: Real-time communication, basic UI, code generation  
-- [ ] security features: api security, hasing code 
+- [ ] security features: api security, hashing code 
 - [ ] push notifications for new messages 
 - [ ] Moderation tools for lobby creators
 
