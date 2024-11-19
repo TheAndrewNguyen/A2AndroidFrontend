@@ -1,8 +1,8 @@
 package com.example.a2chatAndroid.Data.RetrofitApi.Service
 
 import android.util.Log
-import com.example.a2chatAndroid.Data.Api.Retrofit.OnLobbyJoinRequest
-import com.example.a2chatAndroid.Data.Api.Retrofit.RetroFitClient
+import com.example.a2chatAndroid.Data.Remote.Api.Retrofit.OnLobbyJoinRequest
+import com.example.a2chatAndroid.Data.Remote.Api.Retrofit.RetroFitClient
 
 
 //makes api request for /firestore/createLobby
@@ -34,6 +34,7 @@ suspend fun firestoreCreateLobby(): Result<String> {
     }
 }
 
+
 //makes api request for /firestore/addUserToLobby
 suspend fun firestoreAddUserToLobby(uid : String, lobbyCode : String, ) : Result<String>{
     Log.d("Retrofit, firestoreAddUserToLobby", "firestoreAddUserToLobby Called with lobbyCode: ${lobbyCode} and uid: ${uid}")
@@ -41,15 +42,15 @@ suspend fun firestoreAddUserToLobby(uid : String, lobbyCode : String, ) : Result
     return try {
         val request = OnLobbyJoinRequest(lobbyCode, uid)
         val response = RetroFitClient.apiService.addUserToLobby(request)
-        val data = response?.body()
+        val data = response.body()
 
         if (response.isSuccessful) {
             val message = data?.message
             if (message != null) {
                 Log.d("Retrofit", "Response: $message")
-                Result.success(data.message)
+                Result.success(message)
             } else {
-                Log.w("Retrofit", "request failed with error code ${response.code()} and message ${data?.message}")
+                Log.w("Retrofit", "request failed with error code ${response.code()} and message ${message}")
                 Result.failure(Exception("Response body was null"))
             }
         } else {

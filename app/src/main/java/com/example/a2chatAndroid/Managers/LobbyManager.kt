@@ -1,11 +1,11 @@
 package com.example.a2chatAndroid.Managers
 
 import android.util.Log
-import com.example.a2chatAndroid.Data.Api.Service.batchEndChat
-import com.example.a2chatAndroid.Data.Firebase.authGetCurrentUser
-import com.example.a2chatAndroid.Data.Firebase.authGetIdToken
-import com.example.a2chatAndroid.Data.Firebase.authSignOut
-import com.example.a2chatAndroid.Data.Firebase.safeSignOutandSignInAnonymously
+import com.example.a2chatAndroid.Data.Remote.Api.Service.batchEndChat
+import com.example.a2chatAndroid.Data.Remote.Firebase.authGetCurrentUser
+import com.example.a2chatAndroid.Data.Remote.Firebase.authGetIdToken
+import com.example.a2chatAndroid.Data.Remote.Firebase.authSignOut
+import com.example.a2chatAndroid.Data.Remote.Firebase.safeSignOutandSignInAnonymously
 import com.example.a2chatAndroid.Data.Repository.TokenManager
 import com.example.a2chatAndroid.Data.Repository.masterLobbyManager
 import com.example.a2chatAndroid.Data.RetrofitApi.Service.firestoreAddUserToLobby

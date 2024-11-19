@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.Data.Api.okhttp
+package com.example.a2chatAndroid.Data.Remote.Api.okhttp
 
 import okhttp3.Interceptor
 import okhttp3.Response

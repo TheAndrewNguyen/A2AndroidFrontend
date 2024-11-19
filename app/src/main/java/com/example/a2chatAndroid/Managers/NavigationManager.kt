@@ -34,7 +34,6 @@ object NavigationManager {
         navController.navigate("Home")
     }
 
-
     fun navigateToJoinScreen() { //navigate to join screen
         navController.navigate("Join")
     }

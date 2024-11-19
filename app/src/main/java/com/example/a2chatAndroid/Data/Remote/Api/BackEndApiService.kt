@@ -1,11 +1,11 @@
-package com.example.a2chatAndroid.Data.Api
+package com.example.a2chatAndroid.Data.Remote.Api
 
-import com.example.a2chatAndroid.Data.Api.Retrofit.OnLobbyCreateResponse
-import com.example.a2chatAndroid.Data.Api.Retrofit.OnLobbyJoinRequest
-import com.example.a2chatAndroid.Data.Api.Retrofit.OnLobbyJoinResponse
-import com.example.a2chatAndroid.Data.Api.Retrofit.batchEndChatResponse
-import com.example.a2chatAndroid.Data.Api.Retrofit.sendMessageRequest
-import com.example.a2chatAndroid.Data.Api.Retrofit.sendMessageResponse
+import com.example.a2chatAndroid.Data.Remote.Api.Retrofit.OnLobbyCreateResponse
+import com.example.a2chatAndroid.Data.Remote.Api.Retrofit.OnLobbyJoinRequest
+import com.example.a2chatAndroid.Data.Remote.Api.Retrofit.OnLobbyJoinResponse
+import com.example.a2chatAndroid.Data.Remote.Api.Retrofit.batchEndChatResponse
+import com.example.a2chatAndroid.Data.Remote.Api.Retrofit.sendMessageRequest
+import com.example.a2chatAndroid.Data.Remote.Api.Retrofit.sendMessageResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

@@ -38,10 +38,10 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.example.a2chatAndroid.Managers.endChat
-import com.example.a2chatAndroid.Data.Api.Service.sendMessage
+import com.example.a2chatAndroid.Data.Remote.Api.Service.sendMessage
+import com.example.a2chatAndroid.Data.Remote.Firebase.authGetCurrentUser
 import com.example.a2chatAndroid.Data.Repository.masterLobbyManager
-import com.example.a2chatAndroid.Data.Firebase.authGetCurrentUser
+import com.example.a2chatAndroid.Managers.endChat
 import com.example.a2chatAndroid.R
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
