@@ -1,8 +1,8 @@
-package com.example.a2chatAndroid.Network.RetrofitApi.Service
+package com.example.a2chatAndroid.Data.RetrofitApi.Service
 
 import android.util.Log
-import com.example.a2chatAndroid.Network.Api.Retrofit.OnLobbyJoinRequest
-import com.example.a2chatAndroid.Network.Api.Retrofit.RetroFitClient
+import com.example.a2chatAndroid.Data.Api.Retrofit.OnLobbyJoinRequest
+import com.example.a2chatAndroid.Data.Api.Retrofit.RetroFitClient
 
 
 //makes api request for /firestore/createLobby

@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.Network.Api.Retrofit
+package com.example.a2chatAndroid.Data.Api.Retrofit
 
 
 //firestore data classes

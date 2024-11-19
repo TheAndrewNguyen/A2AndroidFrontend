@@ -1,10 +1,10 @@
-package com.example.a2chatAndroid.Network.Api.Service
+package com.example.a2chatAndroid.Data.Api.Service
 
 import android.util.Log
-import com.example.a2chatAndroid.Network.Api.Retrofit.RetroFitClient
-import com.example.a2chatAndroid.Network.Api.Retrofit.sendMessageRequest
-import com.example.a2chatAndroid.Network.CallBacks.masterLobbyManager
-import com.example.a2chatAndroid.Network.Firebase.authGetCurrentUser
+import com.example.a2chatAndroid.Data.Api.Retrofit.RetroFitClient
+import com.example.a2chatAndroid.Data.Api.Retrofit.sendMessageRequest
+import com.example.a2chatAndroid.Data.CallBacks.masterLobbyManager
+import com.example.a2chatAndroid.Data.Firebase.authGetCurrentUser
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 

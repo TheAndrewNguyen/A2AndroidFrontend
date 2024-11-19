@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.Network.Firebase
+package com.example.a2chatAndroid.Data.Firebase
 
 import android.util.Log
 import com.google.firebase.Firebase

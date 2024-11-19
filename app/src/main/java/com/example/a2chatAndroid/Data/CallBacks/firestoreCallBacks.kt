@@ -1,4 +1,4 @@
-package com.example.a2chatAndroid.Network.CallBacks
+package com.example.a2chatAndroid.Data.CallBacks
 
 import android.util.Log
 
